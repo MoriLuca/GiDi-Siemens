@@ -9,7 +9,6 @@ namespace Luca
     {
         public static void BuildCharArrayForSiemens(string stringToConvert, byte[] charArray)
         {
-            //Check for Null
             int stringLenght = stringToConvert.Length;
             charArray[0] = charArray[0];
             charArray[1] = (byte)stringLenght;
@@ -17,6 +16,18 @@ namespace Luca
             {
                 charArray[i + 2] = (byte)stringToConvert[i];
             }
+        }
+
+        public static object BuildCharArrayForSiemens(string stringToConvert)
+        {
+            int stringLenght = stringToConvert.Length;
+            byte[] b = new byte[stringLenght + 2];
+            b[1] = (byte)stringLenght;
+            for (int i = 0; i < stringLenght; i++)
+            {
+                b[i + 2] = (byte)stringToConvert[i];
+            }
+            return b;
         }
 
         public static string BuildStringFromSiemensCharArray(byte[] charArray)
@@ -82,6 +93,7 @@ namespace Luca
                 }
                 if (type == typeof(string))
                 {
+                    BuildCharArrayForSiemens(stringFromAjaxPost, )
                     return Convert.ToString(stringFromAjaxPost);
                 }
                 else
