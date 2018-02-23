@@ -34,11 +34,11 @@ namespace GiDiSiemens.Models
         {
             //L_SiemensData temp = new L_SiemensData(L_S7DataType.SingleVariable,S7.Net.DataType.DataBlock,S7.Net.VarType.Int,1,0,nameof(s._int16),s._int16);
 
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, 1, 0, nameof(s._int16), s._int16));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, 1, 2, nameof(s._uint16), s._uint16));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.DInt, 1, 4, nameof(s._int32), s._int32));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Real, 1, 8, nameof(s._real), s._real));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.String, 1, 12, nameof(s.stringa), s.stringa));
+            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int,typeof(Int16), 1, 0, nameof(s._int16), s._int16));
+            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int,typeof(UInt16), 1, 2, nameof(s._uint16), s._uint16));
+            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.DInt,typeof(Int32), 1, 4, nameof(s._int32), s._int32));
+            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Real, typeof(double), 1, 8, nameof(s._real), s._real));
+            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.String,typeof(string), 1, 12, nameof(s.stringa), s.stringa));
 
         }
     }
@@ -55,14 +55,18 @@ namespace GiDiSiemens.Models
         public L_S7DataType ObjectType { get; }
         public S7.Net.DataType DataType { get; }
         public S7.Net.VarType VariableType { get; }
+        public Type DotNetDataType { get; }
         public int DBNumber { get; }
         public int DBOffset { get; }
         public string Name { get; }
         public object Content { get; set; }
 
+        public L_SiemensData() { }
+
         public L_SiemensData(L_S7DataType ObjectType,
                               S7.Net.DataType DataType,
                               S7.Net.VarType VariableType,
+                              Type DotNetDataType,
                               int DBNumber,
                               int DBOffset,
                               string Name,

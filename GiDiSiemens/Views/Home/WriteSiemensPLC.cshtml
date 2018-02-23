@@ -1,0 +1,68 @@
+﻿@model List<GiDiSiemens.Models.L_SiemensData>
+@{
+    ViewData["Title"] = "WriteSiemensPLC";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery.unobtrusive-ajax.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<div onclick="w(0)">ciao</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">NomeVariabile</th>
+            <th scope="col">Valore</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <th scope="row">@(i+1)</th>
+                <td>@Model[i].Name</td>
+                <td>@Html.TextBox(@i.ToString(), @Model[i].Content, new { @class = "form-control",  id = @i })</td>
+                <td><button onclick="h(@i)">salva</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<script>
+    function h(_index) {
+        var c = $("#"+_index).val();
+        var i = _index;
+        console.log(i + " r " + c);
+        var dataPost = { "Index": i, "Content":c };
+    
+        $.ajax({
+            type: "POST",
+            url: "../Ajax/WriteSiemensPLC",
+            data: JSON.stringify(dataPost),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: q,
+            failure: function (response) {
+                alert(response.d);
+            }
+        });
+    }
+
+    function q(response) {
+        console.log("fatto");
+    }
+
+
+</script>
+
+<hr />
