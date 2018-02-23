@@ -31,13 +31,13 @@ namespace GiDiSiemens.Controllers
             {
                 object sandbox;
                 //Scrivo la classe work sul PLC
-                Type type = Repo.SiemensRepo.SiemensWork.Data[0].DotNetDataType;
+                Type type = Repo.SiemensRepo.SiemensWork.Data[aj.Index].DotNetDataType;
                 if (type == typeof(Int16))
                 {
                     sandbox = Convert.ToInt16(aj.Content);
                     Repo.SiemensRepo.SiemensWork.Data[aj.Index].Content = sandbox;
-                    Luca.L_Siemens.WriteSingleVaraible(Repo.SiemensRepo.SiemensWork.Data[aj.Index]);
                 }
+                Luca.L_Siemens.WriteSingleVaraible(Repo.SiemensRepo.SiemensWork.Data[aj.Index]);
             }
         }
 
