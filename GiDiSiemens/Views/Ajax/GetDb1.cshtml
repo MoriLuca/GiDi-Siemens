@@ -1,0 +1,13 @@
+﻿@model GiDiSiemens.Models.SiemensWork
+@{
+    ViewData["Title"] = "ReadSiemensPLC";
+}
+
+@Html.TextBoxFor(model => model.Data[0].Content)
+@Html.TextBoxFor(model => model.Data[1].Content)
+@Html.TextBoxFor(model => model.Data[2].Content)
+@Html.TextBoxFor(model => model.Data[3].Content)
+@Html.TextBoxFor(model => model.Data[4].Content)
+<div class="progress">
+    <div id="bar" class="progress-bar no-animation" role="progressbar" style="width:@Model.Data[0].Content%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">@Model.Data[0].Content</div>
+</div>

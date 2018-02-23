@@ -15,7 +15,7 @@ namespace GiDiSiemens.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult Siemens()
         {
             ViewData["Message"] = "Your application description page.";
 

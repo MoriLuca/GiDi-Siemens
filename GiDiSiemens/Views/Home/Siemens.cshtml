@@ -1,0 +1,110 @@
+﻿@model GiDiSiemens.Models.SiemensWork
+@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery.unobtrusive-ajax.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- <form asp-controller="Home" asp-action="WriteSiemensPLC" data-ajax="true" data-ajax-method="POST">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Tag Name</th>
+                <th>Description</th>
+                <th>Value</th>
+                <th>New Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Int16</td>
+                <td>Intero a 16 bits</td>
+                <td>@Model.Data[0].Name</td>
+                <td>@Html.TextBoxFor(model => model.Data[0].Content, new { type = "number", min = "−32768", max = "32767", step = "1" })</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>UInt16</td>
+                <td>Intero senza segno a 16 bits</td>
+                <td>@Model.Data[1].Name</td>
+                <td>@Html.TextBoxFor(model => model.Data[1].Content, new { type = "number", min = "0", max = "65535", step = "1" })</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Stringa</td>
+                <td>Array di 10 caratteri</td>
+                <td>@Model.Data[4].Name</td>
+                <td>@Html.TextBoxFor(model => model.Data[4].Content, new { maxlength = "10" })</td>
+
+            </tr>
+        </tbody>
+    </table>
+    <input type="submit" value="Save" class="btn btn-primary" />
+</form> -->
+
+<div id="stringa">reading ... </div>
+<div id="_int16">reading ... </div>
+<div id="_uint16">reading ... </div>
+<div id="_int32">reading ... </div>
+<div id="_real">reading ... </div>
+
+<div id="ajaxContainer"></div>
+
+<script>
+    var en = true;
+
+    function ShowCurrentString() {
+        if (en == true) {
+            $.ajax({
+                type: "POST",
+                url: "Read",
+                data: '',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccess,
+                failure: function (response) {
+                    alert(response.d);
+                }
+            });
+        }
+    }
+
+    function OnSuccess(response) {
+        $.each(response.data, function (index, value) {
+            console.log("fatto");
+            $("#" + value.name).html(value.name + "\t\t\t:" + value.content);
+        });
+    }
+
+    function a() {
+        console.log("inizio scrittura");
+        $.ajax({
+            type: "POST",
+            url: "../Ajax/GetDb1",
+            data: '',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: b,
+            failure: function (response) {
+                alert(response.d);
+            }
+        });
+
+    }
+
+    function b(response) {
+        console.log("fatto");
+        console.log(response);
+        $("#ajaxContainer").html(response);
+    }
+
+    //window.setInterval(ShowCurrentString, 1000);
+    window.setInterval(a, 1000);
+</script>
