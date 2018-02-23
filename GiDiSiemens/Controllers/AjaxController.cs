@@ -18,7 +18,7 @@ namespace GiDiSiemens.Controllers
 
         public JsonResult GetDb1()
         {
-            Luca.L_Siemens.ReadPlcAndComposeSiemensWorkFromSiemensDB();
+            //Luca.L_Siemens.ReadPlcAndComposeSiemensWorkFromSiemensDB();
             var result = _viewRenderService.RenderToStringAsync("Ajax/GetDb1", Repo.SiemensRepo.SiemensWork);
             return Json(result.Result);
         }

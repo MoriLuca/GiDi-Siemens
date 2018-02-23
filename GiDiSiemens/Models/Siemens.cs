@@ -1,46 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GiDiSiemens.Models
 {
-    public class SiemensDB
-    {
-        public Int16 _int16 { get; set; }
-        public UInt16 _uint16 { get; set; }
-        public Int32 _int32 { get; set; }
-        public double _real { get; set; }
-        public byte[] stringa { get; set; } = new byte[12];
-
-        public SiemensDB() { }
-        public SiemensDB(SiemensWork s)
-        {
-            _int16 = (Int16)s.Data[0].Content;
-            _uint16 = (UInt16)s.Data[1].Content;
-            _int32 = (Int32)s.Data[2].Content;
-            _real = (double)s.Data[3].Content;
-            Luca.L_Siemens.BuildCharArrayForSiemens(s.Data[4].Content.ToString(), this.stringa);
-        }
-    }
 
     public class SiemensWork
     {
         public List<L_SiemensData> Data { get; set; } = new List<L_SiemensData>();
 
-        public SiemensWork() { }
-
-        public SiemensWork(SiemensDB s)
+        public SiemensWork()
         {
-            //L_SiemensData temp = new L_SiemensData(L_S7DataType.SingleVariable,S7.Net.DataType.DataBlock,S7.Net.VarType.Int,1,0,nameof(s._int16),s._int16);
-
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int,typeof(Int16), 1, 0, nameof(s._int16), s._int16));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int,typeof(UInt16), 1, 2, nameof(s._uint16), s._uint16));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.DInt,typeof(Int32), 1, 4, nameof(s._int32), s._int32));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Real, typeof(double), 1, 8, nameof(s._real), s._real));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.String,typeof(string), 1, 12, nameof(s.stringa), s.stringa));
-
+            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(Int16), 1, 0, "Intero 16 bits"));
+            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(UInt16), 1, 2, "Intero Senza Segno 16 bits"));
+            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.DInt, typeof(Int32), 1, 4, "Intero 32 bits"));
+            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Real, typeof(double), 1, 8, "Intero Senza Segno 32 bits"));
+            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.String, typeof(string), 1, 12, "Stringa", 10));
         }
+
+        public void ReadSingleVariable(int index)
+        {
+            //legge la variabile della lista con index index
+        }
+
+        public void ReadAllVariables()
+        {
+            Repo.SiemensRepo.PLC.Open();
+            foreach (var i in this.Data)
+            {
+                if(i.VariableType == S7.Net.VarType.String)
+                {
+                    i.RawContent = Repo.SiemensRepo.PLC.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, i.MaxStringLenght+2);
+                }
+                else i.RawContent = Repo.SiemensRepo.PLC.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
+                i.BuildWorkVariableFromRaw();
+            }
+            Repo.SiemensRepo.PLC.Close();
+        }
+
+
+
     }
 
     public enum L_S7DataType
@@ -60,6 +61,8 @@ namespace GiDiSiemens.Models
         public int DBOffset { get; }
         public string Name { get; }
         public object Content { get; set; }
+        public object RawContent { get; set; }
+        public int MaxStringLenght { get; }
 
         public L_SiemensData() { }
 
@@ -70,7 +73,7 @@ namespace GiDiSiemens.Models
                               int DBNumber,
                               int DBOffset,
                               string Name,
-                              object Content)
+                              int MaxStringLenght = -1)
         {
             this.ObjectType = ObjectType;
             this.DataType = DataType;
@@ -79,12 +82,54 @@ namespace GiDiSiemens.Models
             this.DBNumber = DBNumber;
             this.DBOffset = DBOffset;
             this.Name = Name;
-            this.Content = Content;
+            this.MaxStringLenght = MaxStringLenght;
 
+        }
+
+        public void BuildRawVariableFromWork()
+        {
             if (this.VariableType == S7.Net.VarType.String)
             {
-                this.Content = Luca.L_Siemens.BuildStringFromSiemensCharArray((byte[])Content);
+                string str = this.Content.ToString();
+                int stringLenght = this.Content.ToString().Length;
+                byte[] b = new byte[stringLenght + 2];
+                //b[0] = (byte)(stringLenght + 2);
+                b[1] = (byte)stringLenght;
+
+                try
+                {
+                    //controllo se la stringa che devo scrivere non sia null, oppure maggiore del limite massimo imposto dal plc
+                    if (str == null) throw new Exception("La stringa da convertire non può essere null.");
+                    if (str.Length > this.MaxStringLenght) throw new Exception("La stringa Inserita è più lunga del massimo consentito da questa variabile");
+
+                    for (int i = 0; i < stringLenght; i++)
+                    {
+                        b[i + 2] = (byte)str[i];
+                    }
+                    this.RawContent = b;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
+            else this.RawContent = this.Content;
+        }
+
+        public void BuildWorkVariableFromRaw()
+        {
+            if (this.VariableType == S7.Net.VarType.String)
+            {
+                int arrayLenght = this.MaxStringLenght+2;
+                int wordLenght = RawContent.ToString().Length-2;
+                int startingOffset = 2;
+                int endingOffset = (startingOffset + wordLenght);
+                byte[] source = Encoding.ASCII.GetBytes(this.RawContent.ToString());
+                byte[] cp = new byte[wordLenght];
+                Array.Copy(source, startingOffset, cp, 0, Convert.ToInt32(source[1]));
+                this.Content = System.Text.Encoding.Default.GetString(cp);
+            }
+            else this.Content = this.RawContent;
         }
     }
 

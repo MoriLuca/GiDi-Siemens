@@ -18,6 +18,12 @@ namespace Luca
             }
         }
 
+        /// <summary>
+        /// Probabilmente Inutile al momento, è stato risolto andando a chiamare la funzione di conversione direttamente all'interno
+        /// della funzione di scrittura al PLC
+        /// </summary>
+        /// <param name="stringToConvert"></param>
+        /// <returns></returns>
         public static object BuildCharArrayForSiemens(string stringToConvert)
         {
             int stringLenght = stringToConvert.Length;
@@ -41,26 +47,10 @@ namespace Luca
             return System.Text.Encoding.Default.GetString(cp);
         }
 
-        public static void ReadPlcAndComposeSiemensWorkFromSiemensDB()
-        {
-            GiDiSiemens.Repo.SiemensRepo.PLC.Open();
-            GiDiSiemens.Repo.SiemensRepo.PLC.ReadClass(GiDiSiemens.Repo.SiemensRepo.SiemensDB, 1);
-            GiDiSiemens.Repo.SiemensRepo.SiemensWork = new GiDiSiemens.Models.SiemensWork(GiDiSiemens.Repo.SiemensRepo.SiemensDB);
-            GiDiSiemens.Repo.SiemensRepo.PLC.Close();
-        }
-
-        public static void WriteWorkClassOnDB(GiDiSiemens.Models.SiemensWork work)
-        {
-            GiDiSiemens.Repo.SiemensRepo.PLC.Open();
-            GiDiSiemens.Repo.SiemensRepo.SiemensDB = new GiDiSiemens.Models.SiemensDB(work);
-            GiDiSiemens.Repo.SiemensRepo.PLC.WriteClass(GiDiSiemens.Repo.SiemensRepo.SiemensDB, 1);
-            GiDiSiemens.Repo.SiemensRepo.PLC.Close();
-        }
-
         public static void WriteSingleVaraible(GiDiSiemens.Models.L_SiemensData data)
         {
             GiDiSiemens.Repo.SiemensRepo.PLC.Open();
-            GiDiSiemens.Repo.SiemensRepo.PLC.Write(data.DataType, data.DBNumber, data.DBOffset, data.Content);
+            GiDiSiemens.Repo.SiemensRepo.PLC.Write(data.DataType, data.DBNumber, data.DBOffset, data.RawContent);
             GiDiSiemens.Repo.SiemensRepo.PLC.Close();
         }
 
@@ -93,7 +83,6 @@ namespace Luca
                 }
                 if (type == typeof(string))
                 {
-                    BuildCharArrayForSiemens(stringFromAjaxPost, )
                     return Convert.ToString(stringFromAjaxPost);
                 }
                 else

@@ -15,18 +15,11 @@ namespace GiDiSiemens.Controllers
             return View();
         }
 
-        
-        public IActionResult WriteSiemensPLC()
-        {
-            Luca.L_Siemens.ReadPlcAndComposeSiemensWorkFromSiemensDB();
-            return View(Repo.SiemensRepo.SiemensWork.Data);
-        }
-
         public IActionResult Siemens()
         {
             ViewData["Message"] = "PLC Siemens S7 1200 - GiDi Automazione";
             //Leggo dal PLC e compongo la classe work
-            Luca.L_Siemens.ReadPlcAndComposeSiemensWorkFromSiemensDB();
+            Repo.SiemensRepo.SiemensWork.ReadAllVariables();
             return View(Repo.SiemensRepo.SiemensWork);
         }
 
