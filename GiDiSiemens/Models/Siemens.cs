@@ -120,14 +120,10 @@ namespace GiDiSiemens.Models
         {
             if (this.VariableType == S7.Net.VarType.String)
             {
-                int arrayLenght = this.MaxStringLenght+2;
-                int wordLenght = RawContent.ToString().Length-2;
+                string raw = RawContent.ToString();
+                int lunghezzaRaw = raw[1];
                 int startingOffset = 2;
-                int endingOffset = (startingOffset + wordLenght);
-                byte[] source = Encoding.ASCII.GetBytes(this.RawContent.ToString());
-                byte[] cp = new byte[wordLenght];
-                Array.Copy(source, startingOffset, cp, 0, Convert.ToInt32(source[1]));
-                this.Content = System.Text.Encoding.Default.GetString(cp);
+                this.Content = raw.Substring(startingOffset,lunghezzaRaw);
             }
             else this.Content = this.RawContent;
         }
