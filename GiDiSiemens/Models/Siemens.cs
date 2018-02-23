@@ -75,6 +75,7 @@ namespace GiDiSiemens.Models
             this.ObjectType = ObjectType;
             this.DataType = DataType;
             this.VariableType = VariableType;
+            this.DotNetDataType = DotNetDataType;
             this.DBNumber = DBNumber;
             this.DBOffset = DBOffset;
             this.Name = Name;

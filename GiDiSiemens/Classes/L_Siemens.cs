@@ -45,5 +45,12 @@ namespace Luca
             GiDiSiemens.Repo.SiemensRepo.PLC.WriteClass(GiDiSiemens.Repo.SiemensRepo.SiemensDB, 1);
             GiDiSiemens.Repo.SiemensRepo.PLC.Close();
         }
+
+        public static void WriteSingleVaraible(GiDiSiemens.Models.L_SiemensData data)
+        {
+            GiDiSiemens.Repo.SiemensRepo.PLC.Open();
+            GiDiSiemens.Repo.SiemensRepo.PLC.Write(data.DataType, data.DBNumber, data.DBOffset, data.Content);
+            GiDiSiemens.Repo.SiemensRepo.PLC.Close();
+        }
     }
 }

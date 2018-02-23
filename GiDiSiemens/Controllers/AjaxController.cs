@@ -29,11 +29,15 @@ namespace GiDiSiemens.Controllers
             //Se è stato passato un modello in post
             if (Request.Method == "POST")
             {
+                object sandbox;
                 //Scrivo la classe work sul PLC
-                Type type = Repo.SiemensRepo.SiemensWork.Data[0].DotNetDataType
-                Repo.SiemensRepo.SiemensWork.Data[aj.Index].Content = aj.Content;
-                Luca.L_Siemens.WriteWorkClassOnDB(Repo.SiemensRepo.SiemensWork);
-                int a = 2;
+                Type type = Repo.SiemensRepo.SiemensWork.Data[0].DotNetDataType;
+                if (type == typeof(Int16))
+                {
+                    sandbox = Convert.ToInt16(aj.Content);
+                    Repo.SiemensRepo.SiemensWork.Data[aj.Index].Content = sandbox;
+                    Luca.L_Siemens.WriteSingleVaraible(Repo.SiemensRepo.SiemensWork.Data[aj.Index]);
+                }
             }
         }
 
