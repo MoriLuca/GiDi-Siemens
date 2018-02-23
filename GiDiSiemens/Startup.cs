@@ -22,6 +22,7 @@ namespace GiDiSiemens
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddScoped<Luca.IViewRenderService, Luca.ViewRenderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
