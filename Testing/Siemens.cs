@@ -30,27 +30,15 @@ namespace GiDiSiemens.Models
             Repo.SiemensRepo.PLC.Open();
             foreach (var i in this.Data)
             {
-                try
+                //Se è una stringa, devo definire la lettura come se fosse un array di caratteri, andando anche a definire come ultimo 
+                //paramentro la lunghezza totale della stringa
+                if(i.VariableType == S7.Net.VarType.String)
                 {
-                    //Se è una stringa, devo definire la lettura come se fosse un array di caratteri, andando anche a definire come ultimo 
-                    //paramentro la lunghezza totale della stringa
-                    if (i.VariableType == S7.Net.VarType.String)
-                    {
-                        i.RawContent = Repo.SiemensRepo.PLC.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, i.MaxStringLenght + 2);
-                    }
-                    // Se il parametro è un real, converto in double prima di inerirlo nel content. Da fare, non capisco il perchè
-                    else if (i.VariableType == S7.Net.VarType.Real)
-                    {
-                        i.RawContent = Convert.ToDouble(Repo.SiemensRepo.PLC.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1));
-                    }
-                    //Se non è un tipo stringa, posso copiare l'oggetto raw, allinterno del content senza applicare nessuna modifica
-                    else i.RawContent = Repo.SiemensRepo.PLC.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
-                    i.BuildWorkVariableFromRaw();
+                    i.RawContent = Repo.SiemensRepo.PLC.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, i.MaxStringLenght+2);
                 }
-                catch (Exception ex)
-                {
-                    Console.Write(ex.Message);
-                }
+                //Se non è un tipo stringa, posso copiare l'oggetto raw, allinterno del content senza applicare nessuna modifica
+                else i.RawContent = Repo.SiemensRepo.PLC.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
+                i.BuildWorkVariableFromRaw();
             }
             Repo.SiemensRepo.PLC.Close();
         }
@@ -108,7 +96,6 @@ namespace GiDiSiemens.Models
                 string str = this.Content.ToString();
                 int stringLenght = this.Content.ToString().Length;
                 byte[] b = new byte[stringLenght + 2];
-                b[0] = (byte)(this.MaxStringLenght + 2);
                 b[1] = (byte)stringLenght;
 
                 try
@@ -127,6 +114,11 @@ namespace GiDiSiemens.Models
                 {
                     Console.WriteLine(ex.Message);
                 }
+            }
+            else if (this.VariableType == S7.Net.VarType.Real)
+            {
+                uint x = Convert.ToUInt32(this.Content);
+                this.Content = S7.Net.Conversion.ConvertToDouble(x);
             }
             else this.RawContent = this.Content;
         }

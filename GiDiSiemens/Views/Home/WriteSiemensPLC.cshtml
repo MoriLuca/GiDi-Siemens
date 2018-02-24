@@ -7,85 +7,33 @@
 <h2>@ViewData["Title"]</h2>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/jquery.unobtrusive-ajax.js"></script>
+<script src="~/lib/jquery/jquery.unobtrusive-ajax.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
-<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.0.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
-<div onclick="w(0)">ciao</div>
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">NomeVariabile</th>
-            <th scope="col">Valore</th>
-            <th scope="col">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i = 0; i < Model.Count; i++)
-        {
-            <tr>
-                <th scope="row">@(i + 1)</th>
-                <td>@Model[i].Name</td>
-                @if (Model[i].VariableType == S7.Net.VarType.String)
-                {
-                    <td>@Html.TextBox(@i.ToString(), @Model[i].Content, new { @class = "form-control", id = @i, @maxlength = $"{Model[i].MaxStringLenght}" })</td>
-                }
-                else if (Model[i].VariableType == S7.Net.VarType.Int && Model[i].DotNetDataType == typeof(Int16))
-                {
-                    <td>@Html.TextBox(@i.ToString(), @Model[i].Content, new { type = "number", step = "1", id = @i, @max = "100", @mid = "0"})</td>
-                }
-                else if (Model[i].VariableType == S7.Net.VarType.Int && Model[i].DotNetDataType == typeof(UInt16))
-                {
-                    <td>@Html.TextBox(@i.ToString(), @Model[i].Content, new { @class = "form-control", id = @i, @type = "number", @min = $"{UInt16.MinValue}", @max = $"{Int16.MaxValue}", @step = "1" })</td>
-                }
-                <td><input type="submit" onclick="h(@i)" /></td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-
-<script>
-    $('input').blur(function (event) {
-        event.target.checkValidity();
-    }).bind('invalid', function (event) {
-        alert("Valore non compreso tra " + $(event.target).attr("max"));
-        setTimeout(function () { $(event.target).focus(); }, 50);
-        
-    }); 
-
-    function h(_index) {
-        var c = $("#" + _index).val();
-        var i = _index;
-        console.log(i + " valore = " + c);
-        var dataPost = { "Index": i, "Content": c };
-        $.ajax({
-            type: "POST",
-            url: "../Ajax/WriteSiemensPLC_SingleVariable",
-            data: JSON.stringify(dataPost),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: sh,
-            failure: function (response) {
-                alert(response.d);
-            }
-        });
+@for (int i = 0; i < Model.Count; i++)
+{
+<form asp-controller="Ajax" asp-action="Write" data-ajax="true" data-ajax-method="POST">
+    @if (Model[i].VariableType == S7.Net.VarType.String)
+    {
+        <span><input type="text" name="Content" value="@Model[i].Content" maxlength="@Model[i].MaxStringLenght" /></span>
     }
-
-    function sh() {
-        console.log("fatto");
+    else if (Model[i].VariableType == S7.Net.VarType.Int && Model[i].DotNetDataType == typeof(Int16))
+    {
+        <span><input type="number" name="Content" value="@Model[i].Content" max="@Int16.MaxValue" min="@Int16.MinValue" /></span>
     }
-
-
-</script>
-
-<hr />
+    else if (Model[i].VariableType == S7.Net.VarType.Int && Model[i].DotNetDataType == typeof(UInt16))
+    {
+        <span><input type="number" name="Content" value="@Model[i].Content" max="@UInt16.MaxValue" min="@UInt16.MinValue" /></span>
+    }
+    else if (Model[i].VariableType == S7.Net.VarType.DInt && Model[i].DotNetDataType == typeof(Int32))
+    {
+        <span><input type="number" name="Content" value="@Model[i].Content" max="@Int32.MaxValue" min="@Int32.MinValue" /></span>
+    }
+    else if (Model[i].VariableType == S7.Net.VarType.Real && Model[i].DotNetDataType == typeof(double))
+    {
+        <span><input type="number" name="Content" value="@(Math.Truncate((double)Model[i].Content*1000)/1000)" max="@Single.MaxValue" min="@Single.MinValue" step="0.1"/></span>
+    }
+    <span><input type="number" name="Index" value="@i" hidden="hidden" /></span>
+    <span><input type="submit" /></span>
+</form>
+}

@@ -31,8 +31,7 @@ namespace GiDiSiemens.Controllers
         /// all'interno del PLC
         /// </summary>
         /// <param name="aj">parametro inviato dal post ajax</param>
-        [HttpPost]
-        public void WriteSiemensPLC_SingleVariable([FromBody] AjaxUpater aj)
+        public void Write(AjaxUpater aj)
         {
             //Se è stato passato un modello in post
             if (Request.Method == "POST")
@@ -49,6 +48,7 @@ namespace GiDiSiemens.Controllers
                 Repo.SiemensRepo.SiemensWork.Data[aj.Index].BuildRawVariableFromWork();
                 //Scrivo a questo punto la variabile nel PLC
                 Luca.L_Siemens.WriteSingleVaraible(Repo.SiemensRepo.SiemensWork.Data[aj.Index]);
+
             }
         }
 
