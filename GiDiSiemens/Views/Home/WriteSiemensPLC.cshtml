@@ -10,6 +10,12 @@
 <script src="~/lib/jquery.unobtrusive-ajax.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 <div onclick="w(0)">ciao</div>
 
@@ -27,38 +33,55 @@
         @for (int i = 0; i < Model.Count; i++)
         {
             <tr>
-                <th scope="row">@(i+1)</th>
+                <th scope="row">@(i + 1)</th>
                 <td>@Model[i].Name</td>
-                <td>@Html.TextBox(@i.ToString(), @Model[i].Content, new { @class = "form-control",  id = @i })</td>
-                <td><button onclick="h(@i)">salva</button></td>
+                @if (Model[i].VariableType == S7.Net.VarType.String)
+                {
+                    <td>@Html.TextBox(@i.ToString(), @Model[i].Content, new { @class = "form-control", id = @i, @maxlength = $"{Model[i].MaxStringLenght}" })</td>
+                }
+                else if (Model[i].VariableType == S7.Net.VarType.Int && Model[i].DotNetDataType == typeof(Int16))
+                {
+                    <td>@Html.TextBox(@i.ToString(), @Model[i].Content, new { type = "number", step = "1", id = @i, @max = "100", @mid = "0"})</td>
+                }
+                else if (Model[i].VariableType == S7.Net.VarType.Int && Model[i].DotNetDataType == typeof(UInt16))
+                {
+                    <td>@Html.TextBox(@i.ToString(), @Model[i].Content, new { @class = "form-control", id = @i, @type = "number", @min = $"{UInt16.MinValue}", @max = $"{Int16.MaxValue}", @step = "1" })</td>
+                }
+                <td><input type="submit" onclick="h(@i)" /></td>
             </tr>
         }
     </tbody>
 </table>
 
 
-
 <script>
+    $('input').blur(function (event) {
+        event.target.checkValidity();
+    }).bind('invalid', function (event) {
+        alert("Valore non compreso tra " + $(event.target).attr("max"));
+        setTimeout(function () { $(event.target).focus(); }, 50);
+        
+    });
+
     function h(_index) {
-        var c = $("#"+_index).val();
+        var c = $("#" + _index).val();
         var i = _index;
-        console.log(i + " r " + c);
-        var dataPost = { "Index": i, "Content":c };
-    
+        console.log(i + " valore = " + c);
+        var dataPost = { "Index": i, "Content": c };
         $.ajax({
             type: "POST",
             url: "../Ajax/WriteSiemensPLC_SingleVariable",
             data: JSON.stringify(dataPost),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: q,
+            success: sh,
             failure: function (response) {
                 alert(response.d);
             }
         });
     }
 
-    function q(response) {
+    function sh() {
         console.log("fatto");
     }
 

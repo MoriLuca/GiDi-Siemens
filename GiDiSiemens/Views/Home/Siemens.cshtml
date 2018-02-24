@@ -8,7 +8,7 @@
 <div id="ajaxContainer">ciao</div>
 
 <script>
-    function LoadData() {
+    function LoadDataa() {
         $.ajax({
             type: "POST",
             url: "../Ajax/GetDb1",
@@ -27,5 +27,5 @@
         $("#ajaxContainer").html(response);
     }
 
-    window.setInterval(LoadData, 1000);
+    window.setInterval(LoadDataa, 1000);
 </script>

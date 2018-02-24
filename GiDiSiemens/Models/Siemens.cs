@@ -30,10 +30,13 @@ namespace GiDiSiemens.Models
             Repo.SiemensRepo.PLC.Open();
             foreach (var i in this.Data)
             {
+                //Se è una stringa, devo definire la lettura come se fosse un array di caratteri, andando anche a definire come ultimo 
+                //paramentro la lunghezza totale della stringa
                 if(i.VariableType == S7.Net.VarType.String)
                 {
                     i.RawContent = Repo.SiemensRepo.PLC.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, i.MaxStringLenght+2);
                 }
+                //Se non è un tipo stringa, posso copiare l'oggetto raw, allinterno del content senza applicare nessuna modifica
                 else i.RawContent = Repo.SiemensRepo.PLC.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
                 i.BuildWorkVariableFromRaw();
             }

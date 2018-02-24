@@ -17,10 +17,18 @@ namespace GiDiSiemens.Controllers
 
         public IActionResult Siemens()
         {
-            ViewData["Message"] = "PLC Siemens S7 1200 - GiDi Automazione";
+            ViewData["Message"] = "PLC Siemens s7-1200 - GiDi Automazione";
             //Leggo dal PLC e compongo la classe work
             Repo.SiemensRepo.SiemensWork.ReadAllVariables();
             return View(Repo.SiemensRepo.SiemensWork);
+        }
+
+        public IActionResult WriteSiemensPLC()
+        {
+            ViewData["Message"] = "Scrittura variabili su PLC s7-1200";
+            //Leggo dal PLC e compongo la classe work
+            Repo.SiemensRepo.SiemensWork.ReadAllVariables();
+            return View(Repo.SiemensRepo.SiemensWork.Data);
         }
 
         public IActionResult Contact()

@@ -18,6 +18,9 @@ namespace GiDiSiemens.Controllers
 
         public JsonResult GetDb1()
         {
+#warning lettura delle variabili da spostare in un altro punto
+            //leggo tutte la variabili
+            Repo.SiemensRepo.SiemensWork.ReadAllVariables();
             //Luca.L_Siemens.ReadPlcAndComposeSiemensWorkFromSiemensDB();
             var result = _viewRenderService.RenderToStringAsync("Ajax/GetDb1", Repo.SiemensRepo.SiemensWork);
             return Json(result.Result);
@@ -34,6 +37,7 @@ namespace GiDiSiemens.Controllers
             //Se è stato passato un modello in post
             if (Request.Method == "POST")
             {
+
                 //Oggetto temporaneo, utilizzato come contenitore per la conversione nel tipo dato adeguato
                 object blackBox;
                 //Lettura del tipo dato, dall'elemento con index pari a quello richiesto dalla chiamata Ajax
@@ -42,6 +46,7 @@ namespace GiDiSiemens.Controllers
                 blackBox = Luca.L_Siemens.RebuildTheBlackBox(aj.Content, type);
                 //Convertito nel tipo dati corretto, inserisco il valore nel repository all'index indicato dal post ajax
                 Repo.SiemensRepo.SiemensWork.Data[aj.Index].Content = blackBox;
+                Repo.SiemensRepo.SiemensWork.Data[aj.Index].BuildRawVariableFromWork();
                 //Scrivo a questo punto la variabile nel PLC
                 Luca.L_Siemens.WriteSingleVaraible(Repo.SiemensRepo.SiemensWork.Data[aj.Index]);
             }
