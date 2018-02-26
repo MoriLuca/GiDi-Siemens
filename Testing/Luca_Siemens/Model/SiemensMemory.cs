@@ -14,14 +14,7 @@ namespace Luca.Siemens.Models
     {
         public List<SiemensTag> Data { get; set; } = new List<SiemensTag>();
 
-        public SiemensMemory()
-        {
-            this.Data.Add(new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(Int16), 1, 0, "Intero 16 bits"));
-            this.Data.Add(new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(UInt16), 1, 2, "Intero Senza Segno 16 bits"));
-            this.Data.Add(new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.DInt, typeof(Int32), 1, 4, "Intero 32 bits"));
-            this.Data.Add(new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Real, typeof(double), 1, 8, "Intero Senza Segno 32 bits"));
-            this.Data.Add(new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.String, typeof(string), 1, 12, "Stringa", 10));
-        }
+        public SiemensMemory(){}
 
         /// <summary>
         /// Not implemented yet
@@ -57,7 +50,8 @@ namespace Luca.Siemens.Models
                     // Se il parametro è un double int 
                     else if (i.VariableType == S7.Net.VarType.DInt)
                     {
-                        i.RawContent = S7.Net.Conversion.ConvertToInt((uint)plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1));
+                        //i.RawContent = S7.Net.Conversion.ConvertToInt((uint)plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1));
+                        object o = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
                     }
                     //Se non è un tipo stringa, posso copiare l'oggetto raw, allinterno del content senza applicare nessuna modifica
                     else i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);

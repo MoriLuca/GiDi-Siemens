@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="S7netplus" Version="0.1.8" />
+    <Reference Include="S7.Net">
+      <HintPath>\\vmware-host\Shared Folders\D\OneDrive\s7netplus-master\S7.Net\bin\Debug\S7.Net.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

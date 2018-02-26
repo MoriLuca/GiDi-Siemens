@@ -17,8 +17,8 @@ namespace Siemens.Controllers
         }
 
         public JsonResult GetDb1(int a)
-        {
-#warning lettura delle variabili da spostare in un altro punto
+        {   
+            #warning lettura delle variabili da spostare in un altro punto
             //leggo tutte la variabili
             Repo.SiemensRepo.SiemensMem.ReadAllVariables(Repo.SiemensRepo.PLC);
 

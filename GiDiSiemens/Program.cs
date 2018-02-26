@@ -20,7 +20,7 @@ namespace Siemens
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://192.168.1.66:5000")
+                .UseUrls("http://0.0.0.0:5000")
                 .Build();
     }
 }
