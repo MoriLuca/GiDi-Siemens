@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace GiDiSiemens.Models
 {
-
-    public class SiemensWork
+    public class SiemensMemory
     {
         public List<L_SiemensData> Data { get; set; } = new List<L_SiemensData>();
 
-        public SiemensWork()
+        public SiemensMemory()
         {
             this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(Int16), 1, 0, "Intero 16 bits"));
             this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(UInt16), 1, 2, "Intero Senza Segno 16 bits"));
@@ -54,9 +53,6 @@ namespace GiDiSiemens.Models
             }
             Repo.SiemensRepo.PLC.Close();
         }
-
-
-
     }
 
     public enum L_S7DataType

@@ -7,7 +7,7 @@ namespace GiDiSiemens.Repo
 {
     public static class SiemensRepo
     {
-        public static GiDiSiemens.Models.SiemensWork SiemensWork = new Models.SiemensWork();
+        public static GiDiSiemens.Models.SiemensMemory SiemensWork = new Models.SiemensMemory();
         public static S7.Net.Plc PLC = new S7.Net.Plc(S7.Net.CpuType.S71200, "192.168.2.1", 0, 1);
     }
 }
