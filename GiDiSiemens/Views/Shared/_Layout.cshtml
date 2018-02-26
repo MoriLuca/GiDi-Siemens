@@ -26,13 +26,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">GiDiSiemens</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+                    <img src="~/images/LogoGIDI.svg" alt="Logo GiDi Automazione" style="height : 100%; float:left; margin-right:5px;" /> GiDi Automazione [ Siemens ]
+                </a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Siemens">Siemens Read</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="WriteSiemensPLC">Siemens Write</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="MonitorSiemens">Monitor</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="WriteSiemensPLC">Scrittura Nuova Ricetta</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
             </div>
@@ -42,7 +44,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - GiDiSiemens</p>
+            <p>&copy; 2018 - Gi.Di. Automazione</p>
         </footer>
     </div>
 

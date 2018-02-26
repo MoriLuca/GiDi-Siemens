@@ -1,62 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Siemens.Models
+namespace Luca.Siemens.Models
 {
-
-    public class SiemensWork
+    public class SiemensTag
     {
-        public List<L_SiemensData> Data { get; set; } = new List<L_SiemensData>();
-
-        public SiemensWork()
-        {
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(Int16), 1, 0, "Intero 16 bits"));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(UInt16), 1, 2, "Intero Senza Segno 16 bits"));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.DInt, typeof(Int32), 1, 4, "Intero 32 bits"));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Real, typeof(double), 1, 8, "Intero Senza Segno 32 bits"));
-            this.Data.Add(new L_SiemensData(L_S7DataType.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.String, typeof(string), 1, 12, "Stringa", 10));
-        }
-
-        public void ReadSingleVariable(int index)
-        {
-            //legge la variabile della lista con index index
-        }
-
-        public void ReadAllVariables()
-        {
-            Repo.SiemensRepo.PLC.Open();
-            foreach (var i in this.Data)
-            {
-                //Se è una stringa, devo definire la lettura come se fosse un array di caratteri, andando anche a definire come ultimo 
-                //paramentro la lunghezza totale della stringa
-                if(i.VariableType == S7.Net.VarType.String)
-                {
-                    i.RawContent = Repo.SiemensRepo.PLC.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, i.MaxStringLenght+2);
-                }
-                //Se non è un tipo stringa, posso copiare l'oggetto raw, allinterno del content senza applicare nessuna modifica
-                else i.RawContent = Repo.SiemensRepo.PLC.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
-                i.BuildWorkVariableFromRaw();
-            }
-            Repo.SiemensRepo.PLC.Close();
-        }
-
-
-
-    }
-
-    public enum L_S7DataType
-    {
-        SingleVariable,
-        Array,
-        Struct
-    }
-
-    public class L_SiemensData
-    {
-        public L_S7DataType ObjectType { get; }
+        public Luca.Siemens.Data.TypeOfTag ObjectType { get; }
         public S7.Net.DataType DataType { get; }
         public S7.Net.VarType VariableType { get; }
         public Type DotNetDataType { get; }
@@ -67,9 +18,9 @@ namespace Siemens.Models
         public object RawContent { get; set; }
         public int MaxStringLenght { get; }
 
-        public L_SiemensData() { }
+        public SiemensTag() { }
 
-        public L_SiemensData(L_S7DataType ObjectType,
+        public SiemensTag(Luca.Siemens.Data.TypeOfTag ObjectType,
                               S7.Net.DataType DataType,
                               S7.Net.VarType VariableType,
                               Type DotNetDataType,
@@ -96,6 +47,7 @@ namespace Siemens.Models
                 string str = this.Content.ToString();
                 int stringLenght = this.Content.ToString().Length;
                 byte[] b = new byte[stringLenght + 2];
+                b[0] = (byte)(this.MaxStringLenght + 2);
                 b[1] = (byte)stringLenght;
 
                 try
@@ -115,11 +67,6 @@ namespace Siemens.Models
                     Console.WriteLine(ex.Message);
                 }
             }
-            else if (this.VariableType == S7.Net.VarType.Real)
-            {
-                uint x = Convert.ToUInt32(this.Content);
-                this.Content = S7.Net.Conversion.ConvertToDouble(x);
-            }
             else this.RawContent = this.Content;
         }
 
@@ -130,10 +77,9 @@ namespace Siemens.Models
                 string raw = RawContent.ToString();
                 int lunghezzaRaw = raw[1];
                 int startingOffset = 2;
-                this.Content = raw.Substring(startingOffset,lunghezzaRaw);
+                this.Content = raw.Substring(startingOffset, lunghezzaRaw);
             }
             else this.Content = this.RawContent;
         }
     }
-
 }
