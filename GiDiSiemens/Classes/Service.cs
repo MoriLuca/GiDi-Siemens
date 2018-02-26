@@ -10,6 +10,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 
+
+/// <summary>
+/// Codice del servizio per la conversione di una pagina razor, in pagina html.
+/// Server per poter ritornare il testo della pagina html in una chiamata ajax
+/// </summary>
 namespace Luca
 {
     public interface IViewRenderService

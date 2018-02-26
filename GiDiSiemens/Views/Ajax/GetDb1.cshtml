@@ -1,11 +1,11 @@
-﻿@model GiDiSiemens.Models.SiemensWork
+﻿@model Luca.Siemens.Models.SiemensMemory
 @{
     ViewData["Title"] = "ReadSiemensPLC";
 }
 
 @Html.TextBoxFor(model => model.Data[0].Content)
 @Html.TextBoxFor(model => model.Data[1].Content)
-@Html.TextBoxFor(model => model.Data[2].Content)
+@Html.TextBoxFor(model => model.Data[2].Content, new { type ="number"})
 @Html.TextBoxFor(model => model.Data[3].Content)
 @Html.TextBoxFor(model => model.Data[4].Content)
 <div class="progress">

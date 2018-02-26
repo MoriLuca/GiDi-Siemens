@@ -1,6 +1,6 @@
 using System;
 
-namespace GiDiSiemens.Models
+namespace Siemens.Models
 {
     public class ErrorViewModel
     {

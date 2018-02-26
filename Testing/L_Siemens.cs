@@ -47,11 +47,11 @@ namespace Luca
             return System.Text.Encoding.Default.GetString(cp);
         }
 
-        public static void WriteSingleVaraible(GiDiSiemens.Models.L_SiemensData data)
+        public static void WriteSingleVaraible(Siemens.Models.L_SiemensData data)
         {
-            GiDiSiemens.Repo.SiemensRepo.PLC.Open();
-            GiDiSiemens.Repo.SiemensRepo.PLC.Write(data.DataType, data.DBNumber, data.DBOffset, data.RawContent);
-            GiDiSiemens.Repo.SiemensRepo.PLC.Close();
+            Siemens.Repo.SiemensRepo.PLC.Open();
+            Siemens.Repo.SiemensRepo.PLC.Write(data.DataType, data.DBNumber, data.DBOffset, data.RawContent);
+            Siemens.Repo.SiemensRepo.PLC.Close();
         }
 
         /// <summary>

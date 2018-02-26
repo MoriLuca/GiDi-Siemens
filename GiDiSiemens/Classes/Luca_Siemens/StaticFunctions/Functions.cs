@@ -3,57 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Luca
+namespace Luca.Siemens.StaticFunctions
 {
-    public class L_Siemens
+    public static class Functions
     {
-        public static void BuildCharArrayForSiemens(string stringToConvert, byte[] charArray)
-        {
-            int stringLenght = stringToConvert.Length;
-            charArray[0] = charArray[0];
-            charArray[1] = (byte)stringLenght;
-            for (int i = 0; i < stringLenght; i++)
-            {
-                charArray[i + 2] = (byte)stringToConvert[i];
-            }
-        }
-
-        /// <summary>
-        /// Probabilmente Inutile al momento, è stato risolto andando a chiamare la funzione di conversione direttamente all'interno
-        /// della funzione di scrittura al PLC
-        /// </summary>
-        /// <param name="stringToConvert"></param>
-        /// <returns></returns>
-        public static object BuildCharArrayForSiemens(string stringToConvert)
-        {
-            int stringLenght = stringToConvert.Length;
-            byte[] b = new byte[stringLenght + 2];
-            b[1] = (byte)stringLenght;
-            for (int i = 0; i < stringLenght; i++)
-            {
-                b[i + 2] = (byte)stringToConvert[i];
-            }
-            return b;
-        }
-
-        public static string BuildStringFromSiemensCharArray(byte[] charArray)
-        {
-            int arrayLenght = Convert.ToInt32(charArray[0]);
-            int wordLenght = Convert.ToInt32(charArray[1]);
-            int startingOffset = 2;
-            int endingOffset = (startingOffset + wordLenght);
-            byte[] cp = new byte[wordLenght];
-            Array.Copy(charArray, startingOffset, cp, 0, wordLenght);
-            return System.Text.Encoding.Default.GetString(cp);
-        }
-
-        public static void WriteSingleVaraible(GiDiSiemens.Models.L_SiemensData data)
-        {
-            GiDiSiemens.Repo.SiemensRepo.PLC.Open();
-            GiDiSiemens.Repo.SiemensRepo.PLC.Write(data.DataType, data.DBNumber, data.DBOffset, data.RawContent);
-            GiDiSiemens.Repo.SiemensRepo.PLC.Close();
-        }
-
         /// <summary>
         /// Ritorna on oggetto contenente i dati nel formato corretto, in modo da poter essere scritto sul plc.
         /// Viene eseguito un cast nel tipo dato corretto e restituito l'oggetto
@@ -98,6 +51,5 @@ namespace Luca
             //Se non è nessuna del tipo di variabili testate sopra
             return null;
         }
-        
-}
+    }
 }

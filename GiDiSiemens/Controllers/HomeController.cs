@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using GiDiSiemens.Models;
+using Siemens.Models;
 
-namespace GiDiSiemens.Controllers
+namespace Siemens.Controllers
 {
     public class HomeController : Controller
     {
@@ -19,16 +19,16 @@ namespace GiDiSiemens.Controllers
         {
             ViewData["Message"] = "PLC Siemens s7-1200 - GiDi Automazione";
             //Leggo dal PLC e compongo la classe work
-            Repo.SiemensRepo.SiemensWork.ReadAllVariables();
-            return View(Repo.SiemensRepo.SiemensWork);
+            Repo.SiemensRepo.SiemensMem.ReadAllVariables(Repo.SiemensRepo.PLC);
+            return View(Repo.SiemensRepo.SiemensMem);
         }
 
         public IActionResult WriteSiemensPLC()
         {
             ViewData["Message"] = "Scrittura variabili su PLC s7-1200";
             //Leggo dal PLC e compongo la classe work
-            Repo.SiemensRepo.SiemensWork.ReadAllVariables();
-            return View(Repo.SiemensRepo.SiemensWork.Data);
+            Repo.SiemensRepo.SiemensMem.ReadAllVariables(Repo.SiemensRepo.PLC);
+            return View(Repo.SiemensRepo.SiemensMem.Data);
         }
 
         public IActionResult Contact()

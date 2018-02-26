@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Luca;
 
-namespace GiDiSiemens.Controllers
+namespace Siemens.Controllers
 {
     public class AjaxController : Controller
     {
@@ -16,13 +16,13 @@ namespace GiDiSiemens.Controllers
             _viewRenderService = viewRenderService;
         }
 
-        public JsonResult GetDb1()
+        public JsonResult GetDb1(int a)
         {
 #warning lettura delle variabili da spostare in un altro punto
             //leggo tutte la variabili
-            Repo.SiemensRepo.SiemensWork.ReadAllVariables();
-            //Luca.L_Siemens.ReadPlcAndComposeSiemensWorkFromSiemensDB();
-            var result = _viewRenderService.RenderToStringAsync("Ajax/GetDb1", Repo.SiemensRepo.SiemensWork);
+            Repo.SiemensRepo.SiemensMem.ReadAllVariables(Repo.SiemensRepo.PLC);
+
+            var result = _viewRenderService.RenderToStringAsync("Ajax/GetDb1", Repo.SiemensRepo.SiemensMem);
             return Json(result.Result);
         }
 
@@ -40,14 +40,14 @@ namespace GiDiSiemens.Controllers
                 //Oggetto temporaneo, utilizzato come contenitore per la conversione nel tipo dato adeguato
                 object blackBox;
                 //Lettura del tipo dato, dall'elemento con index pari a quello richiesto dalla chiamata Ajax
-                Type type = Repo.SiemensRepo.SiemensWork.Data[aj.Index].DotNetDataType;
+                Type type = Repo.SiemensRepo.SiemensMem.Data[aj.Index].DotNetDataType;
                 //Una volta letto il tipo dati, richiamo la funzione che esegue il cast dell'oggetto
-                blackBox = Luca.L_Siemens.RebuildTheBlackBox(aj.Content, type);
+                blackBox = Luca.Siemens.StaticFunctions.Functions.RebuildTheBlackBox(aj.Content, type);
                 //Convertito nel tipo dati corretto, inserisco il valore nel repository all'index indicato dal post ajax
-                Repo.SiemensRepo.SiemensWork.Data[aj.Index].Content = blackBox;
-                Repo.SiemensRepo.SiemensWork.Data[aj.Index].BuildRawVariableFromWork();
+                Repo.SiemensRepo.SiemensMem.Data[aj.Index].Content = blackBox;
+                Repo.SiemensRepo.SiemensMem.Data[aj.Index].BuildRawVariableFromWork();
                 //Scrivo a questo punto la variabile nel PLC
-                Luca.L_Siemens.WriteSingleVaraible(Repo.SiemensRepo.SiemensWork.Data[aj.Index]);
+                Repo.SiemensRepo.SiemensMem.WriteSingleVaraible(Repo.SiemensRepo.PLC, Repo.SiemensRepo.SiemensMem.Data[aj.Index]);
 
             }
         }
