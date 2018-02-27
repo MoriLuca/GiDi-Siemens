@@ -72,6 +72,26 @@ namespace Luca.Siemens.Models
 
         public void BuildWorkVariableFromRaw()
         {
+            if (this.VariableType == S7.Net.VarType.Int && this.DotNetDataType == typeof(Int16))
+            {
+                this.Content = Convert.ToInt16(this.RawContent);
+            }
+            if (this.VariableType == S7.Net.VarType.Int && this.DotNetDataType == typeof(UInt16))
+            {
+                this.Content = S7.Net.Conversion.ConvertToUshort((short)this.RawContent);
+            }
+            if (this.VariableType == S7.Net.VarType.DInt && this.DotNetDataType == typeof(Int32))
+            {
+                this.Content = Convert.ToInt32(this.RawContent);
+            }
+            if (this.VariableType == S7.Net.VarType.DInt && this.DotNetDataType == typeof(UInt32))
+            {
+                this.Content = Convert.ToInt32(this.RawContent);
+            }
+            if (this.VariableType == S7.Net.VarType.Real && this.DotNetDataType == typeof(Single))
+            {
+                this.Content = Convert.ToSingle(this.RawContent);
+            }
             if (this.VariableType == S7.Net.VarType.String)
             {
                 string raw = RawContent.ToString();
