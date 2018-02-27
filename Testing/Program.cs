@@ -17,25 +17,39 @@ namespace Testing
                 Console.Read();
                 return;
             }
+            Console.WriteLine("Messaggio PLC apertura comunicazione : " + PLCMessage);
             #endregion
 
             #region Lettura variabili
             Siemens.Repo.SiemensRepo.SiemensPlc.ReadAllVariables();
             #endregion
 
+            //writeString();
+
             #region scrittura variabili su console
             foreach (var item in Siemens.Repo.SiemensRepo.SiemensPlc.Data)
             {
-                Console.WriteLine($"valore {item.VariableType} - {item.RawContent}");
+                Console.WriteLine($"valore {item.VariableType} - {item.RawContent} - {item.Content}");
             }
             #endregion
 
+            #region prova stringa
+            object o = Siemens.Repo.SiemensRepo.SiemensPlc.Plc.Read(S7.Net.DataType.DataBlock,1,24,S7.Net.VarType.String,22);
+            #endregion
 
-            Console.WriteLine("Messaggio PLC apertura comunicazione : " + PLCMessage);
             //LaunchTest();
             //ReadAll();
             Siemens.Repo.SiemensRepo.SiemensPlc.Plc.Close();
             Console.Read();
+        }
+
+        public static void writeString()
+        {
+            Console.Write("Inserire la parola da scrivere : ");
+            string s = Console.ReadLine().Trim();
+            Siemens.Repo.SiemensRepo.SiemensPlc.Data[5].Content = s;
+            Siemens.Repo.SiemensRepo.SiemensPlc.BuildRawString_FromWork(Siemens.Repo.SiemensRepo.SiemensPlc.Data[5]);
+            Siemens.Repo.SiemensRepo.SiemensPlc.WriteSingleVaraible(5);
         }
 
         //public static void LaunchTest()

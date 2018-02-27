@@ -16,9 +16,9 @@ namespace Siemens.Repo
                 (new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(UInt16), 1, 2, "UInt16")),
                 (new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.DWord, typeof(Int32), 1, 4, "Int32")),
                 (new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.DWord, typeof(UInt32), 1, 8, "UInt32")),
-                (new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Real, typeof(double), 1, 12, "Double")),
-                (new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Real, typeof(double), 1, 16, "Long double")),
-                (new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.String, typeof(string), 1, 24, "Stringa", 22))
+                (new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Real, typeof(Single), 1, 12, "Double")),
+                //(new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Real, typeof(double), 1, 16, "Long double",1)),
+                (new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.String, typeof(string), 1, 24, "Stringa", 20))
             }
         };
     }
