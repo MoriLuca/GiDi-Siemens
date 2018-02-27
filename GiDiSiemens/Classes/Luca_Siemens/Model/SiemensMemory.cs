@@ -43,24 +43,7 @@ namespace Luca.Siemens.Models
             {
                 try
                 {
-                    //Se è una stringa, devo definire la lettura come se fosse un array di caratteri, andando anche a definire come ultimo 
-                    //paramentro la lunghezza totale della stringa
-                    if (i.VariableType == S7.Net.VarType.String)
-                    {
-                        i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, i.MaxStringLenght + 2);
-                    }
-                    // Se il parametro è un real, converto in double prima di inerirlo nel content. Da fare, non capisco il perchè
-                    else if (i.VariableType == S7.Net.VarType.Real)
-                    {
-                        i.RawContent = Convert.ToDouble(plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1));
-                    }
-                    // Se il parametro è un double int 
-                    else if (i.VariableType == S7.Net.VarType.DInt)
-                    {
-                        i.RawContent = S7.Net.Conversion.ConvertToInt((uint)plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1));
-                    }
-                    //Se non è un tipo stringa, posso copiare l'oggetto raw, allinterno del content senza applicare nessuna modifica
-                    else i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
+                    i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
                     i.BuildWorkVariableFromRaw();
                 }
                 catch (Exception ex)
