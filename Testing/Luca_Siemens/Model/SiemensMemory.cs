@@ -10,20 +10,56 @@ namespace Luca.Siemens.Models
     /// La classe SiemenMemory mette a disposizione la Proprità Data, che è una Lista di oggetti istanziati della classe SiemensData.
     /// 
     /// </summary>
-    public class SiemensMemory
+    public class SiemensPLC
     {
+        public S7.Net.Plc Plc; 
         public List<SiemensTag> Data { get; set; } = new List<SiemensTag>();
 
-        public SiemensMemory(){}
+        public SiemensPLC() { }
 
         /// <summary>
-        /// Not implemented yet
+        /// Lettura di una singola variabile del set Data
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="index">index della variabile da leggere</param>
         public void ReadSingleVariable(int index)
         {
-            //legge la variabile della lista con index index
+            switch (Data[index].VariableType)
+            {
+                case S7.Net.VarType.Bit:
+                    break;
+                case S7.Net.VarType.Byte:
+                    break;
+                case S7.Net.VarType.Word:
+                    break;
+                case S7.Net.VarType.DWord:
+                    break;
+                case S7.Net.VarType.Int:
+                    if (Data[index].DotNetDataType == typeof(Int16)) { }
+                    if (Data[index].DotNetDataType == typeof(UInt16)) { }
+                    break;
+                case S7.Net.VarType.DInt:
+                    if (Data[index].DotNetDataType == typeof(Int32))
+                    {
+                        S7.Net.Conversion.ConvertToInt((uint)Siemens.Repo.SiemensRepo.PLC.Read(S7.Net.DataType.DataBlock, 1, 4, S7.Net.VarType.DWord, 1));
+                    }
+                    if (Data[index].DotNetDataType == typeof(UInt32)) { }
+                    break;
+                case S7.Net.VarType.Real:
+                    if (Data[index].DotNetDataType == typeof(Single)) { }
+                    if (Data[index].DotNetDataType == typeof(double)) { }
+                    break;
+                case S7.Net.VarType.String:
+                    break;
+                case S7.Net.VarType.Timer:
+                    break;
+                case S7.Net.VarType.Counter:
+                    break;
+                default:
+                    break;
+            }
         }
+
+
 
         /// <summary>
         /// Lettura di tutte le variabili contenute all- interno della lista Data dell- oggetto stesso.
@@ -55,7 +91,7 @@ namespace Luca.Siemens.Models
                     }
                     //Se non è un tipo stringa, posso copiare l'oggetto raw, allinterno del content senza applicare nessuna modifica
                     else i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
-                    i.BuildWorkVariableFromRaw();
+                    //i.BuildWorkVariableFromRaw();
                 }
                 catch (Exception ex)
                 {
