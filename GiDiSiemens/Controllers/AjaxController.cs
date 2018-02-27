@@ -21,7 +21,6 @@ namespace Siemens.Controllers
             #warning lettura delle variabili da spostare in un altro punto
             //leggo tutte la variabili
             Repo.SiemensRepo.SiemensMem.ReadAllVariables(Repo.SiemensRepo.PLC);
-
             var result = _viewRenderService.RenderToStringAsync("Ajax/GetDb1", Repo.SiemensRepo.SiemensMem);
             return Json(result.Result);
         }

@@ -84,7 +84,7 @@ namespace Luca.Siemens.Models
             }
             if (this.VariableType == S7.Net.VarType.DInt && this.DotNetDataType == typeof(Int32))
             {
-                this.Content = Convert.ToInt32(this.RawContent);
+                this.Content = this.RawContent;
                 return;
             }
             if (this.VariableType == S7.Net.VarType.DInt && this.DotNetDataType == typeof(UInt32))

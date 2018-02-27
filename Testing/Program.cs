@@ -8,8 +8,17 @@ namespace Testing
         public static object Locker { get; set; } = new object();
         static void Main(string[] args)
         {
-            Siemens.Repo.SiemensRepo.PLC.Open();
-            LaunchTest();
+            S7.Net.ErrorCode PLCMessage;
+            PLCMessage = Siemens.Repo.SiemensRepo.PLC.Open();
+            if (PLCMessage != S7.Net.ErrorCode.NoError)
+            {
+                Console.Write("Errore apertura comunicazoine con PLC : " + PLCMessage);
+                Console.Read();
+                return;
+            }
+            Console.WriteLine("Messaggio PLC apertura comunicazione : " + PLCMessage);
+            //LaunchTest();
+            ReadAll();
             Console.Read();
         }
 
@@ -78,7 +87,7 @@ namespace Testing
                 lock (Locker)
                 {
                     Siemens.Repo.SiemensRepo.PLC.Write(S7.Net.DataType.DataBlock, 1, 4, randomed);
-                    o = Siemens.Repo.SiemensRepo.PLC.Read(S7.Net.DataType.DataBlock, 1, 4, S7.Net.VarType.DInt, 1);
+                    o = S7.Net.Conversion.ConvertToInt((uint)Siemens.Repo.SiemensRepo.PLC.Read(S7.Net.DataType.DataBlock, 1, 4, S7.Net.VarType.DWord, 1));
                 }
                 Int32 j = Convert.ToInt32(o);
                 Console.WriteLine("int32 ]generato : " + randomed + " letto " + j);
@@ -121,6 +130,17 @@ namespace Testing
                 Thread.Sleep(500);
             }
 
+        }
+
+        public static void ReadAll()
+        {
+            object o;
+            lock (Locker)
+            {
+                Siemens.Repo.SiemensRepo.PLC.Write(S7.Net.DataType.DataBlock, 1, 4, -452);
+                var d = Siemens.Repo.SiemensRepo.PLC.Read(S7.Net.DataType.DataBlock, 1, 4, S7.Net.VarType.DWord, 1);
+                Console.WriteLine($"int32 ]generato :  letto {S7.Net.Conversion.ConvertToInt((uint)Siemens.Repo.SiemensRepo.PLC.Read(S7.Net.DataType.DataBlock, 1, 4, S7.Net.VarType.DWord, 1))}");
+            }
         }
 
     }

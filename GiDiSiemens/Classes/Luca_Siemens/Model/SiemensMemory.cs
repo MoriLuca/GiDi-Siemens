@@ -45,8 +45,27 @@ namespace Luca.Siemens.Models
             {
                 try
                 {
-                    i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
-                    i.BuildWorkVariableFromRaw();
+                    switch (i.DotNetDataType.ToString())
+                    {
+                        case "System.Int16":
+                            i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
+                            break;
+                        case "System.UInt16":
+                            i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
+                            break;
+                        case "System.Int32":
+                            i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
+                            break;
+                        case "System.UInt32":
+                            i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
+                            break;
+                        case "System.Single":
+                            i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, 1);
+                            break;
+                        case "System.String":
+                            i.RawContent = plc.Read(i.DataType, i.DBNumber, i.DBOffset, i.VariableType, i.MaxStringLenght + 2);
+                            break;
+                    }
                 }
                 catch (Exception ex)
                 {
