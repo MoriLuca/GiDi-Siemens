@@ -18,9 +18,7 @@ namespace Siemens.Controllers
         public IActionResult MonitorSiemens()
         {
             ViewData["Message"] = "PLC Siemens s7-1200 - GiDi Automazione";
-            //Leggo dal PLC e compongo la classe work
-            Repo.SiemensRepo.SiemensMem.ReadAllVariables(Repo.SiemensRepo.PLC);
-            return View(Repo.SiemensRepo.SiemensMem);
+            return View();
         }
 
         public IActionResult WriteSiemensPLC()
