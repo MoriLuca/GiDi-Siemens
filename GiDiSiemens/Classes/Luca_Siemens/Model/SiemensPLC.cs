@@ -10,11 +10,11 @@ namespace Luca.Siemens.Models
     /// La classe SiemenMemory mette a disposizione la Proprità Data, che è una Lista di oggetti istanziati della classe SiemensData.
     /// 
     /// </summary>
-    public class SiemensMemory
+    public class SiemensPLC
     {
         public List<SiemensTag> Data { get; set; } = new List<SiemensTag>();
 
-        public SiemensMemory()
+        public SiemensPLC()
         {
             this.Data.Add(new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(Int16), 1, 0, "Int16"));
             this.Data.Add(new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(UInt16), 1, 2, "UInt16"));
@@ -40,7 +40,6 @@ namespace Luca.Siemens.Models
         /// <param name="plc">Plc sul quale andare a leggere i dati</param>
         public void ReadAllVariables(S7.Net.Plc plc)
         {
-            plc.Open();
             foreach (var i in this.Data)
             {
                 try
@@ -72,7 +71,6 @@ namespace Luca.Siemens.Models
                     Console.Write(ex.Message);
                 }
             }
-            plc.Close();
         }
 
         /// <summary>
@@ -82,9 +80,7 @@ namespace Luca.Siemens.Models
         /// <param name="data">singola variabile (oggetto data) da scrivere sul plc</param>
         public void WriteSingleVaraible(S7.Net.Plc plc, Luca.Siemens.Models.SiemensTag data)
         {
-            plc.Open();
             plc.Write(data.DataType, data.DBNumber, data.DBOffset, data.RawContent);
-            plc.Close();
         }
     }
 
