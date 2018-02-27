@@ -3,11 +3,18 @@
     ViewData["Title"] = "ReadSiemensPLC";
 }
 
-@Html.TextBoxFor(model => model.Data[0].Content)
-@Html.TextBoxFor(model => model.Data[1].Content)
-@Html.TextBoxFor(model => model.Data[2].Content, new { type ="number"})
-@Html.TextBoxFor(model => model.Data[3].Content)
-@Html.TextBoxFor(model => model.Data[4].Content)
+@foreach (var item in Model.Data)
+{
+    if (item.DotNetDataType != typeof(string))
+    {
+        @Html.TextBoxFor(model => item.Content, new { type = "number" })
+    }
+    else if (item.DotNetDataType == typeof(string))
+    {
+        @Html.TextBoxFor(model => item.Content, new { type = "text" })
+    }
+}
+
 <div class="progress">
     <div id="bar" class="progress-bar no-animation" role="progressbar" style="width:@Model.Data[0].Content%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">@Model.Data[0].Content</div>
 </div>
