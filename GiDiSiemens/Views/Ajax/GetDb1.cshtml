@@ -1,4 +1,4 @@
-﻿@model Luca.Siemens.Models.SiemensMemory
+﻿@model Luca.Siemens.Models.SiemensPLC
 @{
     ViewData["Title"] = "ReadSiemensPLC";
 }
@@ -7,7 +7,7 @@
 {
     if (item.DotNetDataType != typeof(string))
     {
-        @Html.TextBoxFor(model => item.Content, new { type = "number" })
+        @Html.TextBoxFor(model => item.RawContent, new { type = "number" })
     }
     else if (item.DotNetDataType == typeof(string))
     {

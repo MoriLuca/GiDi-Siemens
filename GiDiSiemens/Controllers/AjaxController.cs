@@ -17,11 +17,12 @@ namespace Siemens.Controllers
         }
 
         public JsonResult GetDb1(int a)
-        {   
-            #warning lettura delle variabili da spostare in un altro punto
+        {
+            if (!Siemens.Repo.SiemensRepo.SiemensPlc.Plc.IsConnected) Siemens.Repo.SiemensRepo.SiemensPlc.Plc.Open();
+#warning lettura delle variabili da spostare in un altro punto
             //leggo tutte la variabili
-            Repo.SiemensRepo.SiemensMem.ReadAllVariables(Repo.SiemensRepo.PLC);
-            var result = _viewRenderService.RenderToStringAsync("Ajax/GetDb1", Repo.SiemensRepo.SiemensMem);
+            Repo.SiemensRepo.SiemensPlc.ReadAllVariables();
+            var result = _viewRenderService.RenderToStringAsync("Ajax/GetDb1", Repo.SiemensRepo.SiemensPlc);
             return Json(result.Result);
         }
 
@@ -32,21 +33,24 @@ namespace Siemens.Controllers
         /// <param name="aj">parametro inviato dal post ajax</param>
         public void Write(AjaxUpater aj)
         {
+            if (!Siemens.Repo.SiemensRepo.SiemensPlc.Plc.IsConnected) Siemens.Repo.SiemensRepo.SiemensPlc.Plc.Open();
             //Se è stato passato un modello in post
             if (Request.Method == "POST")
             {
+                object a = RebuildTheBlackBox(aj.Content, Repo.SiemensRepo.SiemensPlc.Data[aj.Index].DotNetDataType);
+                Repo.SiemensRepo.SiemensPlc.Data[aj.Index].RawContent = a;
 
-                //Oggetto temporaneo, utilizzato come contenitore per la conversione nel tipo dato adeguato
-                object blackBox;
-                //Lettura del tipo dato, dall'elemento con index pari a quello richiesto dalla chiamata Ajax
-                Type type = Repo.SiemensRepo.SiemensMem.Data[aj.Index].DotNetDataType;
-                //Una volta letto il tipo dati, richiamo la funzione che esegue il cast dell'oggetto
-                blackBox = Luca.Siemens.StaticFunctions.Functions.RebuildTheBlackBox(aj.Content, type);
-                //Convertito nel tipo dati corretto, inserisco il valore nel repository all'index indicato dal post ajax
-                Repo.SiemensRepo.SiemensMem.Data[aj.Index].Content = blackBox;
-                Repo.SiemensRepo.SiemensMem.Data[aj.Index].BuildRawVariableFromWork();
+                if (Repo.SiemensRepo.SiemensPlc.Data[aj.Index].VariableType == S7.Net.VarType.String)
+                {
+                    Repo.SiemensRepo.SiemensPlc.Data[aj.Index].Content = aj.Content;
+                    Repo.SiemensRepo.SiemensPlc.BuildRawString_FromWork(Repo.SiemensRepo.SiemensPlc.Data[aj.Index]);
+                }
+                else
+                {
+                    Repo.SiemensRepo.SiemensPlc.Data[aj.Index].RawContent = a;
+                }
                 //Scrivo a questo punto la variabile nel PLC
-                Repo.SiemensRepo.SiemensMem.WriteSingleVaraible(Repo.SiemensRepo.PLC, Repo.SiemensRepo.SiemensMem.Data[aj.Index]);
+                Repo.SiemensRepo.SiemensPlc.WriteSingleVaraible(aj.Index);
 
             }
         }
@@ -55,6 +59,48 @@ namespace Siemens.Controllers
         {
             public int Index { get; set; }
             public string Content { get; set; }
+        }
+
+        public static object RebuildTheBlackBox(string stringFromAjaxPost, Type type)
+        {
+            try
+            {
+                if (type == typeof(Int16))
+                {
+                    return Convert.ToInt16(stringFromAjaxPost);
+                }
+                if (type == typeof(UInt16))
+                {
+                    return Convert.ToUInt16(stringFromAjaxPost);
+                }
+                if (type == typeof(Int32))
+                {
+                    return Convert.ToInt32(stringFromAjaxPost);
+                }
+                if (type == typeof(Single))
+                {
+                    return Convert.ToDouble(stringFromAjaxPost);
+                }
+                if (type == typeof(double))
+                {
+                    return Convert.ToDouble(stringFromAjaxPost);
+                }
+                if (type == typeof(string))
+                {
+                    return Convert.ToString(stringFromAjaxPost);
+                }
+                else
+                {
+                    throw new NotImplementedException("Il tipo dato Type passato alla funzione, non è ancora stato implementato");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+
+            //Se non è nessuna del tipo di variabili testate sopra
+            return null;
         }
     }
 }
