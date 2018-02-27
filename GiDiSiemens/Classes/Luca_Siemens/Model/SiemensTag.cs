@@ -75,22 +75,27 @@ namespace Luca.Siemens.Models
             if (this.VariableType == S7.Net.VarType.Int && this.DotNetDataType == typeof(Int16))
             {
                 this.Content = Convert.ToInt16(this.RawContent);
+                return;
             }
             if (this.VariableType == S7.Net.VarType.Int && this.DotNetDataType == typeof(UInt16))
             {
                 this.Content = S7.Net.Conversion.ConvertToUshort((short)this.RawContent);
+                return;
             }
             if (this.VariableType == S7.Net.VarType.DInt && this.DotNetDataType == typeof(Int32))
             {
                 this.Content = Convert.ToInt32(this.RawContent);
+                return;
             }
             if (this.VariableType == S7.Net.VarType.DInt && this.DotNetDataType == typeof(UInt32))
             {
                 this.Content = Convert.ToInt32(this.RawContent);
+                return;
             }
             if (this.VariableType == S7.Net.VarType.Real && this.DotNetDataType == typeof(Single))
             {
                 this.Content = Convert.ToSingle(this.RawContent);
+                return;
             }
             if (this.VariableType == S7.Net.VarType.String)
             {
@@ -98,6 +103,7 @@ namespace Luca.Siemens.Models
                 int lunghezzaRaw = raw[1];
                 int startingOffset = 2;
                 this.Content = raw.Substring(startingOffset, lunghezzaRaw);
+                return;
             }
             else this.Content = this.RawContent;
         }
