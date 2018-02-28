@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Luca;
+using System.IO;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Siemens.Controllers
 {
@@ -20,7 +23,7 @@ namespace Siemens.Controllers
         {
             try
             {
-                var result = _viewRenderService.RenderToStringAsync("Home/GetDb1", Repo.SiemensRepo.SiemensPlc);
+                var result = _viewRenderService.RenderToStringAsync("/Views/Home/GetDb1.cshtml", Repo.SiemensRepo.SiemensPlc);
                 return Json(result.Result);
             }
             catch (Exception ex)

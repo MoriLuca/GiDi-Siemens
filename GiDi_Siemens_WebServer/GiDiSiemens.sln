@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiDiSiemens", "GiDiSiemens.csproj", "{4131BAAD-31F9-4AA9-82AF-278E1290B863}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiDi_SiemensApp", "GiDi_SiemensApp.csproj", "{4131BAAD-31F9-4AA9-82AF-278E1290B863}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
