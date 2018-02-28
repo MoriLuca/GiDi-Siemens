@@ -4,14 +4,105 @@
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<script>
+      function initMap() {
+        var uluru = {lat: 45.6235119, lng: 9.2129414};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 9,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBmLZs__43VF98iqY2HLipdjpPivgI_sg&callback=initMap">
+</script>
 
-<address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+
+<div class="mapContainer lightShadow">
+    <div id="map"></div>
+</div>
+
+<div class="infoWrapper">
+
+    <article class="doveSiamoArticle infoArticle">
+        <header><img class="transition03" src="inc/media/immagini/map.svg">Indirizzo</header>
+        <p>Via Volta 94, Desio (MB), CAP 20832</p>
+    </article>
+
+    <article class="telefonoArticle infoArticle">
+        <header><img class="transition03" src="inc/media/immagini/tel.svg">Telefono</header>
+        <p>0362 179 30 43</p>
+    </article>
+
+    <article class="emailArticle infoArticle">
+        <header><img class="transition03" src="inc/media/immagini/contattiBlu.svg">E-Mail</header>
+
+        <table class="emailTable">
+            <tr>
+                <td>Info</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:info@gidiautomazione.it" target="_blank">info@gidiautomazione.it</td>
+            </tr>
+            <tr>
+                <td>Ufficio - Chiara</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:chiara@gidiautomazione.it" target="_blank">chiara@gidiautomazione.it</td>
+            </tr>
+            <tr>
+                <td>Ordini</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:commerciale@gidiautomazione.it" target="_blank">commerciale@gidiautomazione.it</td>
+            </tr>
+            <tr>
+                <td>Danilo Cattaldo</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:danilo@gidiautomazione.it" target="_blank">danilo@gidiautomazione.it</td>
+            </tr>
+            <tr>
+                <td>Luca Gilardi</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:luca.gilardi@gidiautomazione.it" target="_blank">luca.gilardi@gidiautomazione.it</td>
+            </tr>
+            <tr>
+                <td>Michele Torrentino</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:michele.torrentino@gidiautomazione.it" target="_blank">michele.torrentino@gidiautomazione.it</td>
+            </tr>
+            <tr>
+                <td>Raffaele Tufano</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:raffaele@gidiautomazione.it" target="_blank">raffaele@gidiautomazione.it</td>
+            </tr>
+            <tr>
+                <td>Simone Greco</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:simone@gidiautomazione.it" target="_blank">simone@gidiautomazione.it</td>
+            </tr>
+            <tr>
+                <td>Andrea Scroppo</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:andrea.scroppo@gidiautomazione.it" target="_blank">andrea.scroppo@gidiautomazione.it</td>
+            </tr>
+            <tr>
+                <td>Andrea Suriano</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:andrea.suriano@gidiautomazione.it" target="_blank">andrea.suriano@gidiautomazione.it</td>
+            </tr>
+            <tr>
+                <td>Luca Mori</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:luca.mori@gidiautomazione.it" target="_blank">luca.mori@gidiautomazione.it</td>
+            </tr>
+            <tr>
+                <td>Marco Cattaldo</td>
+                <td class="bull">&bull;</td>
+                <td class="email transition03"><a href="mailto:marco.cattaldo@gidiautomazione.it" target="_blank">marco.cattaldo@gidiautomazione.it</td>
+            </tr>
+        </table>
+    </article>
+
+</div>
