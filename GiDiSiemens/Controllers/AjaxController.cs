@@ -18,10 +18,6 @@ namespace Siemens.Controllers
 
         public JsonResult GetDb1(int a)
         {
-            if (!Siemens.Repo.SiemensRepo.SiemensPlc.Plc.IsConnected) Siemens.Repo.SiemensRepo.SiemensPlc.Plc.Open();
-#warning lettura delle variabili da spostare in un altro punto
-            //leggo tutte la variabili
-            Repo.SiemensRepo.SiemensPlc.ReadAllVariables();
             var result = _viewRenderService.RenderToStringAsync("Ajax/GetDb1", Repo.SiemensRepo.SiemensPlc);
             return Json(result.Result);
         }
