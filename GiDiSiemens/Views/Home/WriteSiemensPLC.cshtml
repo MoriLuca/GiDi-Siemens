@@ -1,45 +1,55 @@
 ﻿@model List<Luca.Siemens.Models.SiemensTag>
 @{
-    ViewData["Title"] = "WriteSiemensPLC";
+    ViewData["Title"] = "Scrittura Tags PLC Siemens";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewData["Title"]</h2>
 
+<div class="list-group">
+    <a class="list-group-item text-center active">Tags PLC</a>
+
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <a class="list-group-item list-group-item-action">
+            <p>Nome Tag : @Model[i].Name</p>
+            <form asp-controller="Ajax" asp-action="Write" data-ajax="true" data-ajax-method="POST">
 
 
-@for (int i = 0; i < Model.Count; i++)
-{
-<form asp-controller="Ajax" asp-action="Write" data-ajax="true" data-ajax-method="POST">
-    @if (Model[i].VariableType == S7.Net.VarType.String)
-    {
-        <span><input type="text" name="Content" value="@Model[i].Content" maxlength="@Model[i].MaxStringLenght" /></span>
+                @if (Model[i].VariableType == S7.Net.VarType.String)
+                {
+                    <span><input type="text" name="Content" value="@Model[i].Content" maxlength="@Model[i].MaxStringLenght" /></span>
+                }
+                else if (Model[i].VariableType == S7.Net.VarType.Int && Model[i].DotNetDataType == typeof(Int16))
+                {
+                    <span><input type="number" name="Content" value="@Model[i].RawContent" max="@Int16.MaxValue" min="@Int16.MinValue" /></span>
+                }
+                else if (Model[i].VariableType == S7.Net.VarType.Int && Model[i].DotNetDataType == typeof(UInt16))
+                {
+                    <span><input type="number" name="Content" value="@Model[i].RawContent" max="@UInt16.MaxValue" min="@UInt16.MinValue" /></span>
+                }
+                else if (Model[i].VariableType == S7.Net.VarType.DWord && Model[i].DotNetDataType == typeof(Int32))
+                {
+                    <span><input type="number" name="Content" value="@Model[i].RawContent" max="@Int32.MaxValue" min="@Int32.MinValue" /></span>
+                }
+                else if (Model[i].VariableType == S7.Net.VarType.DWord && Model[i].DotNetDataType == typeof(UInt32))
+                {
+                    <span><input type="number" name="Content" value="@Model[i].RawContent" max="@UInt32.MaxValue" min="@UInt32.MinValue" /></span>
+                }
+                else if (Model[i].VariableType == S7.Net.VarType.Real && Model[i].DotNetDataType == typeof(Single))
+                {
+                    <span><input type="number" name="Content" value="@(Math.Truncate((double)Model[i].RawContent*1000)/1000)" max="@Single.MaxValue" min="@Single.MinValue" step="0.1" /></span>
+                }
+                else if (Model[i].VariableType == S7.Net.VarType.Real && Model[i].DotNetDataType == typeof(double))
+                {
+                    <span><input type="number" name="Content" value="@(Math.Truncate((double)Model[i].RawContent*1000)/1000)" max="@double.MaxValue" min="@double.MinValue" step="0.1" /></span>
+                }
+                <span><input type="number" name="Index" value="@i" hidden="hidden" /></span>
+                <span><input type="submit" hidden="hidden" /></span>
+            </form>
+        </a>
     }
-    else if (Model[i].VariableType == S7.Net.VarType.Int && Model[i].DotNetDataType == typeof(Int16))
-    {
-        <span><input type="number" name="Content" value="@Model[i].RawContent" max="@Int16.MaxValue" min="@Int16.MinValue" /></span>
-    }
-    else if (Model[i].VariableType == S7.Net.VarType.Int && Model[i].DotNetDataType == typeof(UInt16))
-    {
-        <span><input type="number" name="Content" value="@Model[i].RawContent" max="@UInt16.MaxValue" min="@UInt16.MinValue" /></span>
-    }
-    else if (Model[i].VariableType == S7.Net.VarType.DWord && Model[i].DotNetDataType == typeof(Int32))
-    {
-        <span><input type="number" name="Content" value="@Model[i].RawContent" max="@Int32.MaxValue" min="@Int32.MinValue" /></span>
-    }
-    else if (Model[i].VariableType == S7.Net.VarType.DWord && Model[i].DotNetDataType == typeof(UInt32))
-    {
-        <span><input type="number" name="Content" value="@Model[i].RawContent" max="@UInt32.MaxValue" min="@UInt32.MinValue" /></span>
-    }
-    else if (Model[i].VariableType == S7.Net.VarType.Real && Model[i].DotNetDataType == typeof(Single))
-    {
-        <span><input type="number" name="Content" value="@(Math.Truncate((double)Model[i].RawContent*1000)/1000)" max="@Single.MaxValue" min="@Single.MinValue" step="0.1" /></span>
-    }
-    else if (Model[i].VariableType == S7.Net.VarType.Real && Model[i].DotNetDataType == typeof(double))
-    {
-        <span><input type="number" name="Content" value="@(Math.Truncate((double)Model[i].RawContent*1000)/1000)" max="@double.MaxValue" min="@double.MinValue" step="0.1" /></span>
-    }
-    <span><input type="number" name="Index" value="@i" hidden="hidden" /></span>
-    <span><input type="submit" /></span>
-</form>
-}
+
+</div>
+
+

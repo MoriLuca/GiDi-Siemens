@@ -1,14 +1,16 @@
 ﻿
 @{
-    ViewData["Title"] = "About";
+    ViewData["Title"] = "Monitor PLC Siemens";
 }
 <h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
 
-<div id="ajaxContainer">ciao</div>
+<div id="ajaxContainer">
+</div>
+<div class="loader"></div>
 
 <script>
-    function LoadDataa() {
+    function LoadDataa()
+    {
         $.ajax({
             type: "POST",
             url: "../Ajax/GetDb1",
@@ -21,11 +23,34 @@
             }
         });
     }
+
     function DataLoaded(response) {
         //console.log("fatto");
         //console.log(response);
+        $(".loader").hide();
         $("#ajaxContainer").html(response);
     }
 
     window.setInterval(LoadDataa, 1500);
 </script>
+<style>
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        margin: auto;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
