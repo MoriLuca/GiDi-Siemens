@@ -14,6 +14,10 @@ namespace Siemens.Controllers
         {
             return View();
         }
+        public IActionResult SiemensTag()
+        {
+            return View();
+        }
 
         public IActionResult MonitorSiemens()
         {
