@@ -14,10 +14,10 @@ namespace Luca.Siemens.Models
     public class SiemensPLC
     {
         #region Proprietà classe
-        private object Blocker { get; set; }
+        private object Blocker { get; set; } = new object();
         public S7.Net.Plc Plc;
         public List<SiemensTag> Data { get; set; } = new List<SiemensTag>();
-        public int MillisecDealy { get; set; }
+        public int MillisecDealy { get; set; } 
         #endregion
 
         #region metodi
@@ -28,7 +28,6 @@ namespace Luca.Siemens.Models
         /// <param name="index">index della variabile da leggere</param>
         public void ReadSingleVariable(int index)
         {
-
             lock (Blocker)
             {
                 switch (Data[index].VariableType)

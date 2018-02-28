@@ -11,6 +11,7 @@ namespace Siemens.Repo
         public static Luca.Siemens.Models.SiemensPLC SiemensPlc = new Luca.Siemens.Models.SiemensPLC()
         {
             Plc = new S7.Net.Plc(S7.Net.CpuType.S71200, "192.168.2.1", 0, 1),
+            MillisecDealy = 100,
             Data = new List<Luca.Siemens.Models.SiemensTag>() {
                 (new SiemensTag (Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(Int16), 1, 0, "Int16")),
                 (new SiemensTag(Luca.Siemens.Data.TypeOfTag.SingleVariable, S7.Net.DataType.DataBlock, S7.Net.VarType.Int, typeof(UInt16), 1, 2, "UInt16")),

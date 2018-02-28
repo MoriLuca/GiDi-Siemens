@@ -2,8 +2,12 @@
 
 namespace Luca.Siemens.Models
 {
+    /// <summary>
+    /// Classe che rappresenta una singola variabile contenuta all'interno del PLC
+    /// </summary>
     public class SiemensTag
     {
+        #region Proprietà
         public Luca.Siemens.Data.TypeOfTag ObjectType { get; }
         public S7.Net.DataType DataType { get; }
         public S7.Net.VarType VariableType { get; }
@@ -14,9 +18,11 @@ namespace Luca.Siemens.Models
         public object Content { get; set; }
         public object RawContent { get; set; }
         public int MaxStringLenght { get; }
+        #endregion
 
+        #region Costruttore
         public SiemensTag() { }
-
+        
         public SiemensTag(Luca.Siemens.Data.TypeOfTag ObjectType,
                               S7.Net.DataType DataType,
                               S7.Net.VarType VariableType,
@@ -35,5 +41,6 @@ namespace Luca.Siemens.Models
             this.Name = Name;
             this.MaxStringLenght = MaxStringLenght;
         }
+        #endregion
     }
 }
