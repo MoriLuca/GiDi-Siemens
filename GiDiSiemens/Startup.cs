@@ -14,6 +14,7 @@ namespace Siemens
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            OnApplicationStarted();
         }
 
         public IConfiguration Configuration { get; }
@@ -45,6 +46,13 @@ namespace Siemens
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        // This method get the plc service running
+        public void OnApplicationStarted()
+        {
+            Siemens.Repo.SiemensRepo.SiemensPlc.Plc.Open();
+            Siemens.Repo.SiemensRepo.SiemensPlc.AsyncReadAllVariables();
         }
     }
 }

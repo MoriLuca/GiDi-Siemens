@@ -34,4 +34,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Classes\Luca_Siemens\RepoExample\" />
+  </ItemGroup>
+
 </Project>
