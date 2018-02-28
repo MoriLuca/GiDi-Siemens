@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Luca.Siemens.Models
 {
@@ -37,49 +34,6 @@ namespace Luca.Siemens.Models
             this.DBOffset = DBOffset;
             this.Name = Name;
             this.MaxStringLenght = MaxStringLenght;
-
         }
-
-
-        //public void BuildRawVariableFromWork()
-        //{
-        //    if (this.VariableType == S7.Net.VarType.String)
-        //    {
-        //        string str = this.Content.ToString();
-        //        int stringLenght = this.Content.ToString().Length;
-        //        byte[] b = new byte[stringLenght + 2];
-        //        b[0] = (byte)(this.MaxStringLenght + 2);
-        //        b[1] = (byte)stringLenght;
-
-        //        try
-        //        {
-        //            //controllo se la stringa che devo scrivere non sia null, oppure maggiore del limite massimo imposto dal plc
-        //            if (str == null) throw new Exception("La stringa da convertire non può essere null.");
-        //            if (str.Length > this.MaxStringLenght) throw new Exception("La stringa Inserita è più lunga del massimo consentito da questa variabile");
-
-        //            for (int i = 0; i < stringLenght; i++)
-        //            {
-        //                b[i + 2] = (byte)str[i];
-        //            }
-        //            this.RawContent = b;
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine(ex.Message);
-        //        }
-        //    }
-        //    else this.RawContent = this.Content;
-        //}
-        //public void BuildWorkVariableFromRaw()
-        //{
-        //    if (this.VariableType == S7.Net.VarType.String)
-        //    {
-        //        string raw = RawContent.ToString();
-        //        int lunghezzaRaw = raw[1];
-        //        int startingOffset = 2;
-        //        this.Content = raw.Substring(startingOffset, lunghezzaRaw);
-        //    }
-        //    else this.Content = this.RawContent;
-        //}
     }
 }
