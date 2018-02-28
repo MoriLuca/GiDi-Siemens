@@ -16,7 +16,7 @@ namespace Siemens.Controllers
         }
         public IActionResult SiemensTag()
         {
-            return View();
+            return View(Siemens.Repo.SiemensRepo.SiemensPlc);
         }
 
         public IActionResult MonitorSiemens()

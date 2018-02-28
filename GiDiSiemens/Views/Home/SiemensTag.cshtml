@@ -1,88 +1,62 @@
-﻿
+﻿@model Luca.Siemens.Models.SiemensPLC
+
 @{
     ViewData["Title"] = "SiemensTag";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+
+
+
 <h2>SiemensTag</h2>
 
-<div class="panel panel-primary" style="width:30%; margin:20px">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            Poll: Browser Statistics
-        </h3>
-    </div>
-    <div class="panel-body" style="margin:0px; width:115%;">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="list-group">
+                <a class="list-group-item text-center active" data-remote="true" href="#" id="categoria_0">
+                    Todas Categorias
+                </a>
 
-        <div id="Main">
-            <a name="poll_bar">Chrome </a> <span name="poll_val">60.1% </span><br />
-            <a name="poll_bar">Firefox</a> <span name="poll_val">23.4% </span><br />
-            <a name="poll_bar">IE     </a> <span name="poll_val">9.8%  </span><br />
-            <a name="poll_bar">Safari </a> <span name="poll_val">3.7%  </span><br />
-            <a name="poll_bar">Opera  </a> <span name="poll_val">1.6%  </span><br />
+                @for (int i = 0; i < Model.Data.Count; i++)
+                {
+                    <a class="list-group-item " data-remote="true" href="#sub_categoria_@i" id="categoria_@i" data-toggle="collapse" data-parent="#sub_categoria_@i" style="padding-left: 25px;">
+                        <span class="fas fa-tags fa-lg fa-fw " style="color:cornflowerblue"></span>
+                        <span style="margin-left: 25px;">@Model.Data[i].Name</span>
+                        <span class="menu-ico-collapse"><i class="fa fa-chevron-down" style="margin-right: 5px;float: right;"></i></span>
+                    </a>
+
+                    <div class="collapse list-group-submenu" id="sub_categoria_@i">
+                        <a href="#" class="list-group-item sub-item" data-parent="#sub_categoria_@i" style="padding-left: 78px;">Nome : @Model.Data[i].Name</a>
+                        <a href="#" class="list-group-item sub-item" data-parent="#sub_categoria_@i" style="padding-left: 78px;">Numero DB : @Model.Data[i].DBNumber</a>
+                        <a href="#" class="list-group-item sub-item" data-parent="#sub_categoria_@i" style="padding-left: 78px;">Offset Database : @Model.Data[i].DBOffset</a>
+                        <a href="#" class="list-group-item sub-item" data-parent="#sub_categoria_@i" style="padding-left: 78px;">Tipo Variabile Siemens: @Model.Data[i].VariableType</a>
+                        <a href="#" class="list-group-item sub-item" data-parent="#sub_categoria_@i" style="padding-left: 78px;">Tipo Variabile DotNet: @Model.Data[i].DotNetDataType</a>
+                    </div>
+
+
+                }
+
+            </div>
         </div>
-
-        <!-- Chrome yearly usages detail -->
-        <div id="Chrome">
-            <a name="poll_bar">chrome-2014</a> <span name="poll_val">60% </span><br />
-            <a name="poll_bar">chrome-2013</a> <span name="poll_val">55% </span><br />
-            <a name="poll_bar">chrome-2012</a> <span name="poll_val">46%  </span><br />
-            <a name="poll_bar">chrome-2011</a> <span name="poll_val">34%  </span><br />
-        </div>
-
-        <!-- Chrome monthly usages detail -->
-        <div id="chrome-2014">
-            <a name="poll_bar">November </a> <span name="poll_val">60.1% </span><br />
-            <a name="poll_bar">October  </a> <span name="poll_val">40.4% </span><br />
-            <a name="poll_bar">September</a> <span name="poll_val">59.6% </span><br />
-        </div>
-
-        <!-- Firefox yearly usages detail -->
-        <div id="Firefox">
-            <a name="poll_bar">Firefox-2014</a> <span name="poll_val">60% </span><br />
-            <a name="poll_bar">Firefox-2013</a> <span name="poll_val">40% </span><br />
-            <a name="poll_bar">Firefox-2012</a> <span name="poll_val">15%  </span><br />
-            <a name="poll_bar">Firefox-2011</a> <span name="poll_val">3%  </span><br />
-        </div>
-
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        // add button style
-        $("[name='poll_bar'").addClass("btn btn-default");
-        // Add button style with alignment to left with margin.
-        $("[name='poll_bar'").css({ "text-align": "left", "margin": "5px" });
 
-        //loop
-        $("[name='poll_bar'").each(
-            function (i) {
-                //get poll value
-                var bar_width = (parseFloat($("[name='poll_val'").eq(i).text()) / 2).toString();
-                bar_width = bar_width + "%"; //add percentage sign.
-                //set bar button width as per poll value mention in span.
-                $("[name='poll_bar'").eq(i).width(bar_width);
+<style>
+    /* CSS used here will be applied after bootstrap.css */
+    .menu-ico-collapse {
+        margin-left: 4px;
+    }
 
-                //Define rules.
-                var bar_width_rule = parseFloat($("[name='poll_val'").eq(i).text());
-                if (bar_width_rule >= 50) { $("[name='poll_bar'").eq(i).addClass("btn btn-sm btn-success") }
-                if (bar_width_rule < 50) { $("[name='poll_bar'").eq(i).addClass("btn btn-sm btn-warning") }
-                if (bar_width_rule <= 10) { $("[name='poll_bar'").eq(i).addClass("btn btn-sm btn-danger") }
+    .list-group-submenu .list-group-item:first-child {
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+    }
 
-                //Hide dril down divs
-                $("#" + $("[name='poll_bar'").eq(i).text()).hide();
-            });
-
-        //On click main menu bar show its particular detail div.
-        $("[name='poll_bar'").click(function () {
-            //Hide all
-            $(".panel-body").children().hide();
-            //Display only selected bar texted div sub chart.
-            $("#" + $(this).text()).show();
-            //If not inner drill down sub detail found then move to main menu.
-            if ($("#" + $(this).text()).length == 0) {
-                $("#Main").show();
-            }
-        });
-    });
-</script>
+    .list-group-submenu .list-group-item:last-child {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+</style>
