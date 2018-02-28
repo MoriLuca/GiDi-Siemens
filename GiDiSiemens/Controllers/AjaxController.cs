@@ -42,7 +42,7 @@ namespace Siemens.Controllers
 
                 if (Repo.SiemensRepo.SiemensPlc.Data[aj.Index].VariableType == S7.Net.VarType.String)
                 {
-                    Repo.SiemensRepo.SiemensPlc.Data[aj.Index].Content = aj.Content;
+                    Repo.SiemensRepo.SiemensPlc.Data[aj.Index].Content = a;
                     Repo.SiemensRepo.SiemensPlc.BuildRawString_FromWork(Repo.SiemensRepo.SiemensPlc.Data[aj.Index]);
                 }
                 else
@@ -76,6 +76,10 @@ namespace Siemens.Controllers
                 if (type == typeof(Int32))
                 {
                     return Convert.ToInt32(stringFromAjaxPost);
+                }
+                if (type == typeof(UInt32))
+                {
+                    return Convert.ToUInt32(stringFromAjaxPost);
                 }
                 if (type == typeof(Single))
                 {
