@@ -121,8 +121,11 @@ namespace Luca.Siemens.Models
         /// <param name="index">indice del parametro contenuto nella lista da scrivere sul plc</param>
         public void WriteSingleVaraible(int index)
         {
-
-            Plc.Write(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].RawContent);
+            lock (Blocker)
+            {
+                Plc.Write(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].RawContent);
+            }
+            
         }
 
         public void BuildRawString_FromWork(Models.SiemensTag tag)
