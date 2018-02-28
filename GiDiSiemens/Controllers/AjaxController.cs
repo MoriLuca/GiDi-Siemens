@@ -18,7 +18,7 @@ namespace Siemens.Controllers
 
         public JsonResult GetDb1(int a)
         {
-            var result = _viewRenderService.RenderToStringAsync("Ajax/GetDb1", Repo.SiemensRepo.SiemensPlc);
+            var result = _viewRenderService.RenderToStringAsync("Home/GetDb1", Repo.SiemensRepo.SiemensPlc);
             return Json(result.Result);
         }
 
