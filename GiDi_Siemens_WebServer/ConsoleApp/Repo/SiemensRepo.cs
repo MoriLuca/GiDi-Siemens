@@ -4,7 +4,7 @@ using Luca.Siemens.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ConsoleApp.Siemens
+namespace ConsoleApp
 {
     public static class Repo
     {

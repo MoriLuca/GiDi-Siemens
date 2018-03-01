@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="S7netplus" Version="0.1.8" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="PLC_Siemens">
       <HintPath>..\..\PLC_Siemens\bin\Debug\netcoreapp2.0\PLC_Siemens.dll</HintPath>
     </Reference>
