@@ -17,7 +17,7 @@ namespace Luca.Siemens.Models
         private object Blocker { get; set; } = new object();
         public S7.Net.Plc Plc;
         public List<SiemensTag> Data { get; set; } = new List<SiemensTag>();
-        public int MillisecDealy { get; set; } 
+        public int MillisecDealy { get; set; }
         #endregion
 
         #region metodi
@@ -28,61 +28,69 @@ namespace Luca.Siemens.Models
         /// <param name="index">index della variabile da leggere</param>
         public void ReadSingleVariable(int index)
         {
-            lock (Blocker)
+            try
             {
-                switch (Data[index].VariableType)
+                lock (Blocker)
                 {
-                    case S7.Net.VarType.Bit:
-                        break;
-                    case S7.Net.VarType.Byte:
-                        break;
-                    case S7.Net.VarType.Word:
-                        break;
-                    case S7.Net.VarType.DWord:
-                        if (Data[index].DotNetDataType == typeof(Int32))
-                        {
-                            Data[index].RawContent = S7.Net.Conversion.ConvertToInt((uint)Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1));
-                        }
-                        if (Data[index].DotNetDataType == typeof(UInt32))
-                        {
-                            Data[index].RawContent = S7.Net.Conversion.ConvertToInt((uint)Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1));
-                        }
-                        break;
-                    case S7.Net.VarType.Int:
-                        if (Data[index].DotNetDataType == typeof(Int16))
-                        {
-                            Data[index].RawContent = Convert.ToInt16(Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1));
-                        }
-                        if (Data[index].DotNetDataType == typeof(UInt16))
-                        {
-                            Data[index].RawContent = S7.Net.Conversion.ConvertToUshort((short)Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1));
-                        }
-                        break;
-                    case S7.Net.VarType.DInt:
-                        break;
-                    case S7.Net.VarType.Real:
-                        if (Data[index].DotNetDataType == typeof(Single))
-                        {
-                            Data[index].RawContent = (double)Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1);
-                        }
-                        if (Data[index].DotNetDataType == typeof(double))
-                        {
-                            throw new Exception("La lettura del LREAL non è ancora stata implementata correttamente");
-                            Data[index].RawContent = Convert.ToDecimal(Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1));
-                        }
-                        break;
-                    case S7.Net.VarType.String:
-                        Data[index].RawContent = Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, Data[index].MaxStringLenght + 2);
-                        BuildWorkString_FromRaw(Data[index]);
-                        break;
-                    case S7.Net.VarType.Timer:
-                        break;
-                    case S7.Net.VarType.Counter:
-                        break;
-                    default:
-                        break;
-                } 
+                    switch (Data[index].VariableType)
+                    {
+                        case S7.Net.VarType.Bit:
+                            break;
+                        case S7.Net.VarType.Byte:
+                            break;
+                        case S7.Net.VarType.Word:
+                            break;
+                        case S7.Net.VarType.DWord:
+                            if (Data[index].DotNetDataType == typeof(Int32))
+                            {
+                                Data[index].RawContent = S7.Net.Conversion.ConvertToInt((uint)Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1));
+                            }
+                            if (Data[index].DotNetDataType == typeof(UInt32))
+                            {
+                                Data[index].RawContent = S7.Net.Conversion.ConvertToInt((uint)Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1));
+                            }
+                            break;
+                        case S7.Net.VarType.Int:
+                            if (Data[index].DotNetDataType == typeof(Int16))
+                            {
+                                Data[index].RawContent = Convert.ToInt16(Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1));
+                            }
+                            if (Data[index].DotNetDataType == typeof(UInt16))
+                            {
+                                Data[index].RawContent = S7.Net.Conversion.ConvertToUshort((short)Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1));
+                            }
+                            break;
+                        case S7.Net.VarType.DInt:
+                            break;
+                        case S7.Net.VarType.Real:
+                            if (Data[index].DotNetDataType == typeof(Single))
+                            {
+                                Data[index].RawContent = (double)Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1);
+                            }
+                            if (Data[index].DotNetDataType == typeof(double))
+                            {
+                                throw new Exception("La lettura del LREAL non è ancora stata implementata correttamente");
+                                //Data[index].RawContent = Convert.ToDecimal(Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, 1));
+                            }
+                            break;
+                        case S7.Net.VarType.String:
+                            Data[index].RawContent = Plc.Read(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].VariableType, Data[index].MaxStringLenght + 2);
+                            BuildWorkString_FromRaw(Data[index]);
+                            break;
+                        case S7.Net.VarType.Timer:
+                            break;
+                        case S7.Net.VarType.Counter:
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("SiemensPLC.ReadSingleVariable = " + ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -96,16 +104,17 @@ namespace Luca.Siemens.Models
                 ReadSingleVariable(i);
             }
         }
-        
+
         /// <summary>
         /// Lettura asincrona delle variabili, con delay impostato dalla proprietà
         /// </summary>
         public void AsyncReadAllVariables()
         {
-            Thread t = new Thread(()=>{
+            Thread t = new Thread(() =>
+            {
                 while (true)
                 {
-                    ReadAllVariables();
+                    if (Plc.IsAvailable && Plc.IsConnected) ReadAllVariables();
                     Thread.Sleep(this.MillisecDealy);
                 }
             });
@@ -124,7 +133,7 @@ namespace Luca.Siemens.Models
             {
                 Plc.Write(Data[index].DataType, Data[index].DBNumber, Data[index].DBOffset, Data[index].RawContent);
             }
-            
+
         }
 
         public void BuildRawString_FromWork(Models.SiemensTag tag)

@@ -20,6 +20,41 @@ namespace GiDi_SiemensApp.Controllers
             _viewRenderService = viewRenderService;
         }
 
+        public void OpenPlcConnection()
+        {
+            try
+            {
+                if (!Repo.SiemensPlc.Plc.IsConnected)
+                {
+                    Repo.SiemensPlc.Plc.Open();
+                    //dentro il read asynk lo fermo fin quando non deve ripartire
+                    Repo.SiemensPlc.AsyncReadAllVariables();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Startup.Startup.OnApplicationStarted = " + ex.Message);
+            }
+        }
+
+        public int GetStatus()
+        {
+            try
+            {
+                bool isAvailable = Siemens.Repo.SiemensPlc.Plc.IsAvailable;
+                bool isConnected = Siemens.Repo.SiemensPlc.Plc.IsConnected;
+                if (!isAvailable) return 0;
+                if (isAvailable && !isConnected) return 1;
+                if (isAvailable && isConnected) return 2;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("AjaxController.GetStatus = " + ex.Message);
+            }
+            return -1; //errore
+        }
+
         public JsonResult GetDb1(int a)
         {
             try

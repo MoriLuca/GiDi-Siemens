@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - GiDiSiemens</title>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -18,8 +19,10 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+
 </head>
 <body>
+
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -40,8 +43,12 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="MonitorSiemens">Monitor</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="WriteSiemensPLC">Scrittura Nuova Ricetta</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a><i id="connectionIcon" class="fas fa-plug fa-lg noConnection"></i></a></li>
+
+
                 </ul>
             </div>
+
         </div>
     </nav>
     <div class="container body-content">
@@ -49,6 +56,7 @@
         <hr />
         <footer>
             <p>&copy; 2018 - Gi.Di. Automazione</p>
+
         </footer>
     </div>
 
@@ -73,7 +81,32 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-
     @RenderSection("Scripts", required: false)
+    <script>
+        function x() {
+            console.log("getStatus");
+            $.ajax({
+                type: "Get",
+                url: "../Ajax/GetStatus",
+                data: '',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: a,
+                failure: function (response) {
+                    alert(response.d);
+                }
+            });
+        }
+
+        function a(response) {
+            console.log(response);
+            if (response == -1) $("#connectionIcon").css('color', 'purple');
+            if (response == 0) $("#connectionIcon").css('color', 'red');
+            if (response == 1) $("#connectionIcon").css('color', 'orange');
+            if (response == 2) $("#connectionIcon").css('color', 'forestgreen');
+        }
+
+        window.setInterval(x, 3000);
+    </script>
 </body>
 </html>

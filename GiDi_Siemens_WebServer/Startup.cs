@@ -51,8 +51,15 @@ namespace GiDi_SiemensApp
         // This method get the plc service running
         public void OnApplicationStarted()
         {
-            Siemens.Repo.SiemensPlc.Plc.Open();
-            Siemens.Repo.SiemensPlc.AsyncReadAllVariables();
+            try
+            {
+                Siemens.Repo.SiemensPlc.Plc.Open();
+                Siemens.Repo.SiemensPlc.AsyncReadAllVariables();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Startup.Startup.OnApplicationStarted = " + ex.Message);
+            }
         }
     }
 }
