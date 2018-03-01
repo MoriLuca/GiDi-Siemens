@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Luca;
+using GiDi_SiemensApp.Siemens;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Siemens.Controllers
+namespace GiDi_SiemensApp.Controllers
 {
     public class AjaxController : Controller
     {
@@ -23,7 +24,7 @@ namespace Siemens.Controllers
         {
             try
             {
-                var result = _viewRenderService.RenderToStringAsync("/Views/Home/GetDb1.cshtml", Repo.SiemensRepo.SiemensPlc);
+                var result = _viewRenderService.RenderToStringAsync("/Views/Home/GetDb1.cshtml", Repo.SiemensPlc);
                 return Json(result.Result);
             }
             catch (Exception ex)
@@ -41,25 +42,24 @@ namespace Siemens.Controllers
         /// <param name="aj">parametro inviato dal post ajax</param>
         public void Write(AjaxUpater aj)
         {
-            if (!Siemens.Repo.SiemensRepo.SiemensPlc.Plc.IsConnected) Siemens.Repo.SiemensRepo.SiemensPlc.Plc.Open();
+            if (!Repo.SiemensPlc.Plc.IsConnected) Repo.SiemensPlc.Plc.Open();
             //Se è stato passato un modello in post
             if (Request.Method == "POST")
             {
-                object a = RebuildTheBlackBox(aj.Content, Repo.SiemensRepo.SiemensPlc.Data[aj.Index].DotNetDataType);
-                Repo.SiemensRepo.SiemensPlc.Data[aj.Index].RawContent = a;
+                object a = RebuildTheBlackBox(aj.Content, Repo.SiemensPlc.Data[aj.Index].DotNetDataType);
+                Repo.SiemensPlc.Data[aj.Index].RawContent = a;
 
-                if (Repo.SiemensRepo.SiemensPlc.Data[aj.Index].VariableType == S7.Net.VarType.String)
+                if (Repo.SiemensPlc.Data[aj.Index].VariableType == S7.Net.VarType.String)
                 {
-                    Repo.SiemensRepo.SiemensPlc.Data[aj.Index].Content = a;
-                    Repo.SiemensRepo.SiemensPlc.BuildRawString_FromWork(Repo.SiemensRepo.SiemensPlc.Data[aj.Index]);
+                    Repo.SiemensPlc.Data[aj.Index].Content = a;
+                    Repo.SiemensPlc.BuildRawString_FromWork(Repo.SiemensPlc.Data[aj.Index]);
                 }
                 else
                 {
-                    Repo.SiemensRepo.SiemensPlc.Data[aj.Index].RawContent = a;
+                    Repo.SiemensPlc.Data[aj.Index].RawContent = a;
                 }
                 //Scrivo a questo punto la variabile nel PLC
-                Repo.SiemensRepo.SiemensPlc.WriteSingleVaraible(aj.Index);
-
+                Repo.SiemensPlc.WriteSingleVaraible(aj.Index);
             }
         }
 

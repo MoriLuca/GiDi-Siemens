@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Siemens
+namespace GiDi_SiemensApp
 {
     public class Startup
     {
@@ -51,8 +51,8 @@ namespace Siemens
         // This method get the plc service running
         public void OnApplicationStarted()
         {
-            Siemens.Repo.SiemensRepo.SiemensPlc.Plc.Open();
-            Siemens.Repo.SiemensRepo.SiemensPlc.AsyncReadAllVariables();
+            Siemens.Repo.SiemensPlc.Plc.Open();
+            Siemens.Repo.SiemensPlc.AsyncReadAllVariables();
         }
     }
 }

@@ -4,9 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using GiDi_SiemensApp.Siemens;
 using Siemens.Models;
 
-namespace Siemens.Controllers
+namespace GiDi_SiemensApp.Controllers
 {
     public class HomeController : Controller
     {
@@ -16,7 +17,7 @@ namespace Siemens.Controllers
         }
         public IActionResult SiemensTag()
         {
-            return View(Siemens.Repo.SiemensRepo.SiemensPlc);
+            return View(Repo.SiemensPlc);
         }
 
         public IActionResult MonitorSiemens()
@@ -29,7 +30,7 @@ namespace Siemens.Controllers
         {
             ViewData["Message"] = "Scrittura variabili su PLC s7-1200";
             //Leggo dal PLC e compongo la classe work
-            return View(Repo.SiemensRepo.SiemensPlc.Data);
+            return View(Repo.SiemensPlc.Data);
         }
 
         public IActionResult Contact()

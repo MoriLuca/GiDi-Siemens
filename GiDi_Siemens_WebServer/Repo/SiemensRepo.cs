@@ -4,9 +4,9 @@ using Luca.Siemens.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Siemens.Repo
+namespace GiDi_SiemensApp.Siemens
 {
-    public static class SiemensRepo
+    public static class Repo
     {
         public static Luca.Siemens.Models.SiemensPLC SiemensPlc = new Luca.Siemens.Models.SiemensPLC()
         {
